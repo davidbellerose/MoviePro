@@ -1,0 +1,82 @@
+﻿@using MoviePro.Models.ViewModels
+@using MoviePro.Services.Interfaces
+@using System.Text.RegularExpressions
+@inject IImageService _imageService;
+@model LandingPageVM
+
+@{
+    ViewData["Title"] = "BrowseMovies";
+    var genre = ViewData["Genre"];
+    var page = ViewData["Page"];
+
+    int cPage = 0;
+
+    var nextPage = Convert.ToInt32(page);
+    nextPage = nextPage + 1;
+    page = nextPage.ToString();
+
+
+    var prevPage = "";
+    if (page.ToString() == "1")
+    {
+        cPage = 1;
+        prevPage = cPage.ToString();
+    }
+    else
+    {
+        cPage = Convert.ToInt32(page);
+        if (cPage <= 2)
+        {
+            cPage = 1;
+        }
+        else
+        {
+            cPage = cPage - 2;
+        }
+        prevPage = cPage.ToString();
+    }
+}
+
+@* <h1>BrowseMovies</h1> *@
+
+@* <p>
+    <a asp-action="Create">Create New</a>
+</p> *@
+
+@if (Model.BrowseMovies.results is null)
+{
+    <h2>No More Movies.</h2>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row row-cols-lg-4  gy-3">
+        @foreach (var movie in Model.BrowseMovies.results)
+        {
+            <div class="col">
+                <div class="card myCard">
+                    @if (movie.poster_path == "https://image.tmdb.org/t/p/w500/")
+                    {
+                        <img src="~/images/anika-de-klerk-dWYjy9zIiF8-unsplash.jpg" class="card-img-top myCard-image img-fluid" alt="...">
+                    }
+                    else
+                    {
+                        <img src="@movie.poster_path" class="card-img-top myCard-image img-fluid" alt="...">
+                    }
+                    <div class="card-body myCard-overlay">
+                        <div class="overlay-text">
+                            <span class="card-title clampTitle">@movie.title</span>
+                            <span class="card-text clampOverview">@movie.overview</span>
+                            <a asp-action="Details" asp-controller="Movies" asp-route-id="@movie.id" class="btn bnt-block font-weight-bold myCardButton">Read More...</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="row">
+        <div class="col d-flex justify-content-center mt-3">
+            <a class="btn myCardButton me-3" asp-area="" asp-controller="Home" asp-action="BrowseMovies" asp-route-genre=@genre asp-route-page=@prevPage>Previous</a>
+            <a class="btn myCardButton" asp-area="" asp-controller="Home" asp-action="BrowseMovies" asp-route-genre=@genre asp-route-page=@nextPage>Next</a>
+        </div>
+    </div>
+}

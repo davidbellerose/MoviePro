@@ -1,0 +1,107 @@
+﻿@using MoviePro.Models.ViewModels
+@using MoviePro.Services.Interfaces
+@using System.Text.RegularExpressions
+@inject IImageService _imageService;
+@model LandingPageVM
+
+@{
+    ViewData["Title"] = "Movie-Pro";
+    var rgx = new Regex("[^a-zA-Z0-9]");
+}
+
+<section class="px-4">
+    <div class="text-center font-weight-bolder carousel-banner row row-cols-1 row-cols-md-2 row-cols-lg-4">
+        <div class="col">
+            <a class="nav-link font-weight-bolder" aria-current="page" asp-controller="Home" asp-action="Index">UPCOMING</a>
+        </div>
+        <div class="col">
+            <a class="nav-link active font-weight-bolder" asp-controller="Home" asp-action="IndexNowPlaying">NOW PLAYING</a>
+        </div>
+        <div class="col">
+            <a class="nav-link font-weight-bolder" asp-controller="Home" asp-action="IndexPopular">POPULAR</a>
+        </div>
+        <div class="col">
+            <a class="nav-link font-weight-bolder" asp-controller="Home" asp-action="IndexTopRated">TOP RATED</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="myCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="7000">
+            <div class="carousel-inner">
+
+                @{
+                    var classText = "active";
+                    @for (var slide = 0; slide <= 3; slide++)
+                    {
+
+                        <div class="carousel-item @classText">
+                            <div class="row">
+                                @foreach (var movie in Model.NowPlaying.results.Skip(slide * 4).Take(4))
+                                {
+                                    <div class="col-sm-3 mb-2">
+                                        <div class="card myCard">
+                                            @if (movie.poster_path == "https://image.tmdb.org/t/p/w500/")
+                                            {
+                                                <img src="~/images/anika-de-klerk-dWYjy9zIiF8-unsplash.jpg" class="card-img-top myCard-image img-fluid" alt="...">
+                                            }
+                                            else
+                                            {
+                                                <img src="@movie.poster_path" class="card-img-top myCard-image img-fluid" alt="...">
+                                            }
+                                            <div class="card-body myCard-overlay">
+                                                <div class="overlay-text">
+                                                    <span class="card-title clampTitle">@movie.title</span>
+                                                    <span class="card-text clampOverview">@movie.overview</span>
+                                                    <a asp-action="Details" asp-controller="Movies" asp-route-id="@movie.id" class="btn bnt-block font-weight-bold myCardButton">Read More...</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        classText = "";
+                    }
+                }
+            </div>
+            <ol class="carousel-indicators">
+                <li data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"></li>
+                <li data-bs-target="#myCarousel" data-bs-slide-to="1"></li>
+                <li data-bs-target="#myCarousel" data-bs-slide-to="2"></li>
+                <li data-bs-target="#myCarousel" data-bs-slide-to="3"></li>
+            </ol>
+            <a class="carousel-control-prev" href="#myCarousel" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#myCarousel" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+
+
+
+@section Scripts {
+
+    <script>
+        var errorMessage = '@TempData["ErrorMessage"]';
+        if (errorMessage) {
+            swalWithDarkButton.fire({
+                html: `<h5 class='pt-3 pb-5 font-weight-bolder'>${errorMessage}</h5>`
+            });
+        }
+    </script>
+    <script>
+        //Carousel.TRANSITION_DURATION = 1000 /* Your number here*/
+        //Carousel.DEFAULTS = {
+        //    interval: 7000 /* you could change this value too, but to add data-interval="xxxx" to your html it's fine too*/
+        //                        pause: 'hover',
+        //    wrap: true,
+        //    keyboard: true
+        //}
+    </script>
+}

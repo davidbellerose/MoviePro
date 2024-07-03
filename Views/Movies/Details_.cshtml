@@ -1,0 +1,234 @@
+﻿@using MoviePro.Models.Database;
+@*@using MoviePro.Models.Data*@
+@using MoviePro.Services.Interfaces
+@inject IImageService _imageService
+@model Movie
+
+@{
+    ViewData["Title"] = "Movie Details";
+}
+
+<div class="page-single movie-single">
+    <div class="container">
+        <div class="ipad-width2">
+            <div class="col-md-4 col-sm-12 col-xs-12">
+                <div class="movie-img sticky-sb">
+                    <img src="@_imageService.DecodeImage(Model.Poster, Model.PosterType)" alt="">
+
+                    @if (Model.TrailerUrl != "")
+                    {
+                        <div class="movie-btn">
+                            <div class="btn-transform transform-vertical red">
+                                <div><a href="@Model.TrailerUrl" class="item item-1 redbtn text-white"> <i class="ion-play"></i> Watch Trailer</a></div>
+                                <div><a href="@Model.TrailerUrl" class="item item-2 redbtn fancybox-media hvr-grow"><i class="ion-play"></i></a></div>
+                            </div>
+                        </div>
+                    }
+
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        if (!(bool)ViewBag.Local)
+                        {
+
+                            <div class="movie-btn">
+                                <div class="btn-transform transform-vertical red">
+                                    <div>
+                                        <a class="item item-1 yellowbtn"> <i class="ion-plus"></i> Import Movie</a>
+                                    </div>
+                                    <div>
+                                        <form id="frmSearch" asp-action="Import" asp-controller="Movies" method="post">
+                                            <input type="hidden" name="Id" value="@Model.MovieId" />
+                                            <a onclick="document.getElementById('frmSearch').submit()" class="item item-2 yellowbtn hvr-grow">
+                                                <i class="ion-plus"></i>
+                                            </a>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="movie-btn">
+                                <div class="btn-transform transform-vertical red">
+                                    <div>
+                                        <a class="item item-1 yellowbtn"> <i class="ion-plus"></i> Edit Movie</a>
+                                        <a asp-controller="Movies" asp-action="Edit" asp-route-id="@Model.Id" class="item item-2 yellowbtn hvr-grow"><i class="ion-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                </div>
+            </div>
+            <div class="col-md-8 col-sm-12 col-xs-12">
+
+                <div class="movie-single-ct main-content">
+
+                    <div class="movie-rate">
+                        <div class="rate">
+                            <i class="ion-android-star"></i>
+                            <p>
+                                <span>@Model.VoteAverage</span> /10
+                                <h1 class="bd-hd" style="padding: 20px 0px 0px 40px;">
+                                    @Model.Title
+                                </h1>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="movie-tabs">
+                        <div class="tabs">
+                            <ul class="tab-links tabs-mv">
+                                <li class="active"><a href="#overview">Overview</a></li>
+                                <li><a href="#cast">Cast</a></li>
+                                <li><a href="#crew">Crew</a></li>
+
+                            </ul>
+                            <div class="tab-content">
+
+                                <div id="overview" class="tab active">
+                                    <div class="row">
+                                        <div class="col-md-8 col-sm-12 col-xs-12">
+                                            <p style="font-weight:bolder; color:white;">@Model.TagLine</p>
+                                            <br />
+                                            <p>@Model.Overview</p>
+
+                                            <div class="title-hd-sm">
+                                                <h4>Starring</h4>
+                                            </div>
+
+                                            <!-- movie cast -->
+                                            <div class="mvcast-item">
+                                                @foreach (var castMember in Model.Cast.Take(5))
+                                                {
+                                                    <div class="cast-it">
+                                                        <div class="cast-left">
+                                                            <img src="@castMember.ImageUrl" width="40" alt="">
+                                                            <a asp-controller="Actors" asp-action="Details" asp-route-id="@castMember.CastID">@castMember.Name</a>
+                                                        </div>
+                                                        <p> @Html.Raw(castMember.Character.Replace("/", "<br />aka: "))</p>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-xs-12 col-sm-12">
+                                            <div class="sb-it">
+                                                <h6>Movie Id:</h6>
+                                                <p>@Model.MovieId</p>
+                                            </div>
+
+
+                                            <div class="sb-it">
+                                                <h6>Director: </h6>
+                                                <p>@Model.Crew.FirstOrDefault(c => c.Job == "Director")?.Name</p>
+                                            </div>
+
+                                            <div class="sb-it">
+                                                <h6>Writers: </h6>
+                                                <p>
+                                                    @foreach (var writer in Model.Crew.Where(c => c.Department == "Writing" && (c.Job == "Writer" || c.Job == "Screenplay")))
+                                                    {
+                                                        @writer.Name
+
+                                                        <br />
+                                                    }
+                                                </p>
+                                            </div>
+
+                                            <div class="sb-it">
+                                                <h6>Stars: </h6>
+                                                <p>
+                                                    @foreach (var actor in Model.Cast.Take(5))
+                                                    {
+                                                        @actor.Name
+
+                                                        <br />
+                                                    }
+                                                </p>
+                                            </div>
+
+                                            <div class="sb-it">
+                                                <h6>Release Date:</h6>
+                                                <p>@Model.ReleaseDate.ToString("MMM dd, yyyy")</p>
+                                            </div>
+
+                                            <div class="sb-it">
+                                                <h6>Run Time:</h6>
+                                                <p>@Model.RunTime min</p>
+                                            </div>
+
+                                            <div class="sb-it">
+                                                <h6>MMPA Rating:</h6>
+                                                <p>@Model.Rating</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="cast" class="tab">
+                                    <div class="row">
+
+                                        <!-- //== -->
+                                        <div class="title-hd-sm">
+                                            <h4>Cast</h4>
+                                        </div>
+                                        <div class="mvcast-item">
+                                            @foreach (var castMember in Model.Cast)
+                                            {
+                                                <div class="cast-it">
+                                                    <div class="cast-left">
+                                                        <img src="@castMember.ImageUrl" alt="" width="40">
+                                                        <a asp-controller="Actors" asp-action="Detail" asp-route-id="@castMember.CastID">@castMember.Name</a>
+                                                    </div>
+                                                    <p>@Html.Raw(castMember.Character.Replace("/", "<br />aka: ")).</p>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="crew" class="tab">
+                                    <div class="row">
+
+                                        <!-- //== -->
+                                        <div class="title-hd-sm">
+                                            <h4>Crew</h4>
+                                        </div>
+                                        <div class="mvcast-item">
+                                            @foreach (var crewMember in Model.Crew)
+                                            {
+                                                <div class="cast-it">
+                                                    <div class="cast-left">
+                                                        <img src="@crewMember.ImageUrl" alt="" width="40">
+                                                        <a asp-controller="Actors" asp-action="Detail" asp-route-id="@crewMember.CrewID">@crewMember.Name</a>
+                                                    </div>
+                                                    <p>@crewMember.Job (@crewMember.Department)  </p>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        let imageString = '@Html.Raw(_imageService.DecodeImage(Model.Backdrop, Model.BackdropType))';
+        let commonHero = document.getElementById('common-hero');
+        commonHero.style.backgroundImage = ('url(' + imageString + ')');
+        commonHero.style.height = "400px";
+
+    </script>
+
+}
+view raw
+gistfile1.txt hosted with ❤ by GitHub 

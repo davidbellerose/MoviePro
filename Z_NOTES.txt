@@ -1,0 +1,198 @@
+﻿
+MoviesController Details view checks if request from api or db  version
+
+MovieCollection is the join table for many-to-many movie-collection
+
+MovieCollectionsController.index, for selct boxes to move moveis to and from collection
+
+----------------------------------------------------
+
+The API info is set in the appsettings.json file. move this to secrets file
+
+The startup.cs line `services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));`
+	puts the json data into an "AppSettings" class (or object?).
+
+The Settings/AppSettings is a container for the TMDBSettings and MovieProSettings.
+	The TMDBSettings has class/properties for the API image/video data, base url, query options etc.
+	The MovieProSettings has class/properties to represent the API credentials.
+
+The _appSettings (AppSettings.TMDBSettings) is injected into the constructor of
+	the TMDBMovieService where the request and response info is retrieved using
+	the AppSettings(API info) class. The MovieDetailAsync method gets _appSettings,
+	then instantiates and returns a new movieDetail object based on the MovieDetail class(model).
+	this is an object populated with the info from the api.
+
+The TMDBMappingService.MapMovieDetailAsync method
+		maps the data into the newMovie class properties.
+			so when does the newMovie class become an object, in the controller?
+	? the mapping service takes the MovieDetail(api version),  and maps(transfers?)
+		the data to an instance of the Movie class/model
+		via the MoviesController.Import method. (Is this projection?)
+		The movie is imported/added to the local/app SQL database
+		It's a copy from the API stored in the app db.
+
+
+TMDBMovieService => public async Task<MovieDetail> MovieDetailAsync(int id)
+Models/TMDB/MovieDetail
+	returning an instance of MovieDetail based on MovieDetail model/class.
+this has movie info from api
+
+TMDBMappingService => public async Task<Movie> MapMovieDetailAsync(MovieDetail movie)
+Models/Database/Movie
+	It's a method that takes in an instance of MovieDetail and returns an instance of Movie
+	? mapping vs. projection?
+
+MoviesController
+public async Task<IActionResult> Import(int id)
+var movieDetail = await _movieService.MovieDetailAsync(id);
+		// gets the movie from the api
+var movie = await _mappingService.MapMovieDetailAsync(movieDetail);
+		// maps the data to copy it into the movie object
+		// now the controller can put a copy in the database
+		// keep the api and database versions separate
+
+If you watch the intro video to this project
+ you will see that only the api part is constructed
+ all the other parts shown in the intro video are not done.
+
+************************ 
+TODO
+***********************
+back to top
+seeder
+readme
+"My Movie Tracker"
+"Movie db"
+"Movie Base"
+
+**********************
+CODE COLLECTIONS
+*************************
+Scaffols views
+just for crud for collection categories enums IRemoteMovieService
+the collections list the movies in those collections
+so there will be a collections nav to view movies in each
+
+The collection is just personal custom categories, not same as moviecategory enums ( IRemoteMovieService )
+	the controller is done, just needs views scaffolded to crud collection categories only
+	its for creating collection categories, not adding movies to them
+	where can you add movie to collection category? drop down in movie index and detail?
+	it just adds link to movie, doesn't import it.
+	it is many to many with movies thru join table moviecollections
+> a collection can be watch list, no would have to be separate model, like collection model
+	the seed service creates the 'ALL' collection/category
+
+***************************
+IMPORT LIBRARY - The library is the imported movies, rename to My Movies
+****************************
+MoviesController.Library method doesn't have view, may need to scaffold this controller
+the library/view is the local db list
+	clicking on its detail goes to api detail
+	the import view needs a select for collection
+	maybe watch list can be a collection name
+		with watched bool.
+MoviesController is for the api movies
+i think i need library views scaffolded with crud
+i might need a library controller
+but library method is in moviescontroller
+	which imports to db
+
+
+***************************
+ADD TO WATCH LIST
+****************************
+movie would need add to watch list.
+	has bool for watched;yes;no
+	has personal rating with int for stars
+	maybe a personal comment string
+	i think these would go in collections model ; no
+	would need separate model controller
+	I think i only need to use movie id for watch list
+	dont see need to import all movie data into database
+
+
+https://learn.coderfoundry.com/products/the-complete-net-coding-bootcamp/categories/2147908385/posts/2152112657
+
+************************************************
+GENRES
+***********************************************
+{
+  "genres": [
+    {
+      "id": 28,
+      "name": "Action"
+    },
+    {
+      "id": 12,
+      "name": "Adventure"
+    },
+    {
+      "id": 16,
+      "name": "Animation"
+    },
+    {
+      "id": 35,
+      "name": "Comedy"
+    },
+    {
+      "id": 80,
+      "name": "Crime"
+    },
+    {
+      "id": 99,
+      "name": "Documentary"
+    },
+    {
+      "id": 18,
+      "name": "Drama"
+    },
+    {
+      "id": 10751,
+      "name": "Family"
+    },
+    {
+      "id": 14,
+      "name": "Fantasy"
+    },
+    {
+      "id": 36,
+      "name": "History"
+    },
+    {
+      "id": 27,
+      "name": "Horror"
+    },
+    {
+      "id": 10402,
+      "name": "Music"
+    },
+    {
+      "id": 9648,
+      "name": "Mystery"
+    },
+    {
+      "id": 10749,
+      "name": "Romance"
+    },
+    {
+      "id": 878,
+      "name": "Science Fiction"
+    },
+    {
+      "id": 10770,
+      "name": "TV Movie"
+    },
+    {
+      "id": 53,
+      "name": "Thriller"
+    },
+    {
+      "id": 10752,
+      "name": "War"
+    },
+    {
+      "id": 37,
+      "name": "Western"
+    }
+  ]
+}
