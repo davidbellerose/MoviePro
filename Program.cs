@@ -17,6 +17,7 @@ namespace MoviePro
         {
             //CreateHostBuilder(args).Build().Run();
             var host = CreateHostBuilder(args).Build();
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             var dataService = host.Services.CreateScope().ServiceProvider.GetRequiredService<SeedService>();
             await dataService.ManageDataAsync();
 

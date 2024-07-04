@@ -7,8 +7,20 @@
     ViewData["Title"] = "Movie Details";
 }
 
+
+<form asp-controller="Movies" asp-action="Import" asp-route-id="@Model.MovieId" method="post">
+    <button type="submit">
+    <div id="import">
+        <div class="import-icon">
+            <i class="bi bi-download"></i>
+        </div>
+        <span>Import</span>
+    </div>
+    </button>
+</form>
+
 <!-- movie -->
-<div class="row row-cols-sm-1 movie-detail">
+<div class="row row-cols-md-2 movie-detail">
     <div class="col">
         <div>
             @if (Model.Poster.Length == 33)
@@ -58,11 +70,16 @@
             <div class="header-text">
                 <span>Trailer</span>
             </div>
-            @{
+            @if (Model.TrailerUrl is null)
+            {
+
+            }
+            else
+            {
                 var key = Model.TrailerUrl.Split("=").Last();
                 var ysource = $"https://www.youtube.com/watch?v={key}";
+                <div>If your browser blocks the video, <a href="@ysource" target="_blank">click here</a></div>
             }
-            <div>If your browser blocks the video, <a href="@ysource" target="_blank">click here</a></div>
             <div class="holder">
                 @if (Model.TrailerUrl is null)
                 {
@@ -70,7 +87,7 @@
                 }
                 else
                 {
-                    key = Model.TrailerUrl.Split("=").Last();
+                    var key = Model.TrailerUrl.Split("=").Last();
                     var source = $"https://www.youtube.com/embed/{key}";
                     <iframe width="320" height="240" src="@source" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     @* <div class="trailer-overlay trigger" src="@source" data-bs-target="#videoModal" data-bs-toggle="modal"></div> *@
@@ -123,7 +140,7 @@
 }
 
 @section scripts {
-@*     <script>
+    @*     <script>
         $(document).ready(function () {
             autoPlayYouTubeModal();
         });

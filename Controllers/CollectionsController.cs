@@ -28,13 +28,18 @@ namespace MoviePro.Controllers
         public async Task<IActionResult> Index()
         {
             var defaultCollectionName = _appSettings.MovieProSettings.DefaultCollection.Name;
+
             var collections = await _context.Collection.Where(c => c.Name != defaultCollectionName).ToListAsync();
+
+            //var collections = await _context.Collection.ToListAsync();
 
             return View(collections);
         }
 
-
-
+        public IActionResult Create()
+        {
+            return View();
+        }
 
 
         // POST: Collections/Create
@@ -46,7 +51,7 @@ namespace MoviePro.Controllers
         {
             _context.Add(collection);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "MovieCollections", new { id = collection.Id });
+            return RedirectToAction("Index", "Collections");
         }
 
         // GET: Collections/Edit/5
@@ -136,7 +141,7 @@ namespace MoviePro.Controllers
             var collection = await _context.Collection.FindAsync(id);
             _context.Collection.Remove(collection);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "MovieCollections");
+            return RedirectToAction("Index", "Collections");
         }
 
         private bool CollectionExists(int id)

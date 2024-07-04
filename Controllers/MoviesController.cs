@@ -60,19 +60,26 @@ namespace MoviePro.Controllers
                 return RedirectToAction("Details", "Movies", new { id = localMovie.Id, local = true });
             }
 
+            //this gets the movie with id from the api
             var movieDetail = await _movieService.MovieDetailAsync(id);
+
+            // this takes the movie just retreived from the api and puts it into an object
             var movie = await _mappingService.MapMovieDetailAsync(movieDetail);
 
+            // the movie in the object is now added to the database
             _context.Add(movie);
             await _context.SaveChangesAsync();
 
+            // adds movie to the default "All" collection
             await AddToMovieCollection(movie.Id, _appSettings.MovieProSettings.DefaultCollection.Name);
 
-            return RedirectToAction("Import");
+            //return RedirectToAction("Import");
+            return RedirectToAction("Details", "Movies", new { id = movie.Id, local = true });
         }
 
         public IActionResult Create()
         {
+            // the select list is a list of the collections/catagories
             ViewData["CollectionId"] = new SelectList(_context.Collection, "Id", "Name");
 
             return View();

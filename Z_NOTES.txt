@@ -1,13 +1,62 @@
 ﻿
+
+
+************************ 
+TODO
+***********************
+MoviesController.Details method check if already in db and flag if so
+        and remove import button or change its icon and message
+        above title: movie in xxx collection
+        detail view should have the dropdown that will import it to the selected collection
+        in detail title section; form for import as above
+        if already in, detail will go to db version
+        title block will show personal rating(not yet rated) and expandable notes.
+        might need componant view
+        change to watch collection after done watching.
+back to top
+seeder
+readme
+Movie Muster
+
+***************************
+IMPORT LIBRARY - The library is the imported movies, rename to My Movies
+****************************
+MoviesController.Library method doesn't have view, may need to scaffold this controller
+the library/view is the local db list
+	clicking on its detail goes to api detail
+	the import view needs a select for collection
+	maybe watch list can be a collection name
+		with watched bool.
+MoviesController is for the api movies
+i think i need library views scaffolded with crud
+i might need a library controller
+but library method is in moviescontroller
+	which imports to db
+
+
+***************************
+    FEATURES
+****************************
+	have personal rating
+    have comments
+
+
+https://learn.coderfoundry.com/products/the-complete-net-coding-bootcamp/categories/2147908385/posts/2152112657
+
+******************************************************
+   NOTES
+******************************************************
+
 MoviesController Details view checks if request from api or db  version
+    import method to add to database
 
 MovieCollection is the join table for many-to-many movie-collection
 
 MovieCollectionsController.index, for selct boxes to move moveis to and from collection
 
-----------------------------------------------------
+the library looks like the movies that were imported into db
 
-The API info is set in the appsettings.json file. move this to secrets file
+----------------------------------------------------
 
 The startup.cs line `services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));`
 	puts the json data into an "AppSettings" class (or object?).
@@ -54,64 +103,6 @@ var movie = await _mappingService.MapMovieDetailAsync(movieDetail);
 If you watch the intro video to this project
  you will see that only the api part is constructed
  all the other parts shown in the intro video are not done.
-
-************************ 
-TODO
-***********************
-back to top
-seeder
-readme
-"My Movie Tracker"
-"Movie db"
-"Movie Base"
-
-**********************
-CODE COLLECTIONS
-*************************
-Scaffols views
-just for crud for collection categories enums IRemoteMovieService
-the collections list the movies in those collections
-so there will be a collections nav to view movies in each
-
-The collection is just personal custom categories, not same as moviecategory enums ( IRemoteMovieService )
-	the controller is done, just needs views scaffolded to crud collection categories only
-	its for creating collection categories, not adding movies to them
-	where can you add movie to collection category? drop down in movie index and detail?
-	it just adds link to movie, doesn't import it.
-	it is many to many with movies thru join table moviecollections
-> a collection can be watch list, no would have to be separate model, like collection model
-	the seed service creates the 'ALL' collection/category
-
-***************************
-IMPORT LIBRARY - The library is the imported movies, rename to My Movies
-****************************
-MoviesController.Library method doesn't have view, may need to scaffold this controller
-the library/view is the local db list
-	clicking on its detail goes to api detail
-	the import view needs a select for collection
-	maybe watch list can be a collection name
-		with watched bool.
-MoviesController is for the api movies
-i think i need library views scaffolded with crud
-i might need a library controller
-but library method is in moviescontroller
-	which imports to db
-
-
-***************************
-ADD TO WATCH LIST
-****************************
-movie would need add to watch list.
-	has bool for watched;yes;no
-	has personal rating with int for stars
-	maybe a personal comment string
-	i think these would go in collections model ; no
-	would need separate model controller
-	I think i only need to use movie id for watch list
-	dont see need to import all movie data into database
-
-
-https://learn.coderfoundry.com/products/the-complete-net-coding-bootcamp/categories/2147908385/posts/2152112657
 
 ************************************************
 GENRES

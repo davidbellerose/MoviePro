@@ -31,9 +31,9 @@ body {
     color: var(--light-color);
 }
 
-/*h1, h2, h3, h4, h5, h6 {
-    color: var(--light-color);
-}*/
+h1, h2, h3, h4, h5, h6 {
+    color: var(--accent-color);
+}
 
 .area-form{
     display: flex;
@@ -45,6 +45,11 @@ body {
 .area-form input{
     margin-top: 0.5rem;
     margin-bottom: 1rem;
+}
+
+.header-custom {
+    height: 100%;
+    background-image: url('../images/header-background.png');
 }
 
 /*****************************************************************************************
@@ -184,13 +189,68 @@ body {
     }
 }
 
-
 .note-editable {
     background-color: white !important;
     color: black !important;
 }
 
-/*   END FOOTER*/
+/*****************************************************************************************
+	
+	NAV                                                                  NAV
+
+*****************************************************************************************/
+.fixed-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+#stickyNav {
+    //position: fixed;
+    z-index: 10;
+}
+
+#import {
+    position: fixed;
+    top: 100px;
+    right: 15px;
+    z-index: 50;
+    width: 50px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-color);
+    background-color: var(--dark-color);
+    border-top: 1px solid var(--accent-color);
+    border-bottom: 1px solid var(--accent-color);
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+
+    i {
+        font-weight: 900;
+        font-size: 1.5rem;
+    }
+}
+
+#import span {
+    position: absolute;
+    right: 10px;
+    opacity: 0;
+    transition: all 0.3s ease-out;
+}
+#import:hover {
+    color: var(--dark-color);
+    background-color: var(--accent-color);
+    width: 100px;
+    justify-content: start;
+    padding-left: 0.5rem;
+
+    span {
+        opacity: 1;
+    }
+}
 
 .border-top {
     border-top: 1px solid #e5e5e5;
@@ -355,6 +415,22 @@ a.navbar-brand {
     color: var(--background-color);
 }
 
+#navbar .navbar-nav .nav-item{
+    margin-right: 0.5rem;
+}
+
+// to get the styles working for the links in the ManageNav partial
+.nav-pills li .active {
+    background-color: var(--accent-color) !important;
+    color: var(--background-color) !important;
+}
+
+/*****************************************************************************************
+	
+	CAROUSEL                                                                  FOOTER
+
+*****************************************************************************************/
+
 /*This removes carousel and displays cards on small screens*/
 #smallScreen{
     display: none;
@@ -368,11 +444,6 @@ a.navbar-brand {
         display: block;
         margin: 0 2rem;
     }
-}
-
-.header-custom {
-    height: 100%;
-    background-image: url('../images/header-background.png');
 }
 
 .carousel-indicators {
@@ -460,6 +531,11 @@ a.navbar-brand {
     transition: transform 1s ease-in-out;
 }
 
+/*****************************************************************************************
+	
+	CARDS                                                                  CARDS
+
+*****************************************************************************************/
 /*home index cards*/
 .myCard {
     position: relative;
@@ -561,6 +637,11 @@ a.navbar-brand {
 }
 
 
+/*****************************************************************************************
+	
+	MOVIE DETAIL                                                               MOVIE DETAIL
+
+*****************************************************************************************/
 /* movie deail header text*/
 .header-text, .header-text a {
     margin-top: 1.5rem;
@@ -634,8 +715,21 @@ a.navbar-brand {
     color: #212121;
 }
 
-// to get the styles working for the links in the ManageNav partial
-.nav-pills li .active {
-    background-color: var(--accent-color) !important;
-    color: var(--background-color) !important;
+
+/*****************************************************************************************
+	
+	CRUD VIEWS                                                              CRUD VIEWS
+
+*****************************************************************************************/
+
+.crud-view, .crud-view th, .crud-view  td{
+    background-color: var(--background-color);
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
 }
+
+.crud-view input{
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+

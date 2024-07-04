@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -10,7 +14,7 @@
 </head>
 <body>
     <header class="px-3 py-5 mb-5 header-custom">
-        <nav class="navbar navbar-expand-sm navstyle navbar-custom">
+        <nav id="stickyNav" class="navbar navbar-expand-sm navstyle navbar-custom">
             <div class="container">
                 @* <a class="navbar-brand p-0" asp-area="" asp-controller="Home" asp-action="Index">Home</a> *@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbarSupportedContent"
@@ -21,7 +25,7 @@
                 <div id="navbar" class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav w-100">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">My Movies</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -49,6 +53,12 @@
                                 <li class="dropdown-sub"><a class="nav-link-sub" asp-area="" asp-controller="Home" asp-action="BrowseMovies" asp-route-genre="37">Western</a></li>
                             </ul>
                         </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Collections" asp-action="Index">Collections</a>
+                            </li>
+                        }
                     </ul>
                     <div class="input-group p-0 m-0 d-flex align-items-center flex-nowrap justify-content-start">
                         <form asp-action="FindMovies" method="post" class="d-flex">
