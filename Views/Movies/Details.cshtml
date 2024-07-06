@@ -5,25 +5,18 @@
 
 @{
     ViewData["Title"] = "Movie Details";
+    // var collectionId = ViewData["CollectionId"];
+    var local = ViewData["Local"].ToString();
+    // var cName = (List<Collection>)ViewData["collectionId"];
+    var cName = ViewData["collectionId"];
 }
 
-
-<form asp-controller="Movies" asp-action="Import" asp-route-id="@Model.MovieId" method="post">
-    <button type="submit">
-    <div id="import">
-        <div class="import-icon">
-            <i class="bi bi-download"></i>
-        </div>
-        <span>Import</span>
-    </div>
-    </button>
-</form>
-
+<div>@cName</div>
 <!-- movie -->
 <div class="row row-cols-md-2 movie-detail">
     <div class="col">
         <div>
-            @if (Model.Poster.Length == 33)
+            @if (Model.Poster.Length == 33 || String.IsNullOrEmpty(Model.Poster.ToString()) || Model.Poster.Count() == 0)
             {
                 <img src="~/images/anika-de-klerk-dWYjy9zIiF8-unsplash.jpg" class="img-fluid" alt="...">
             }
@@ -53,6 +46,117 @@
         <div class="row">
             <div class="col h5">
                 <span class="font-weight-bolder mr-2">Reviews:</span> @Model.VoteAverage / 10;
+            </div>
+        </div>
+        <div class="row import-form">
+            <div class="col h5">
+                @* <span class="mb-2">@local: @Model.MovieId;  @Model.Id; </span> *@
+                @if (local == "True")
+                {
+                    <div id="myInfo" class="myInfo">
+                        <div class="my-rating">
+                            <div class="rate-label">My Rating:</div>
+                            <div class="rating-static">
+                                <input id="radio1" type="radio" asp-for="MyRating" name="MyRating" value="5" class="star" disabled />
+                                <label for="radio1">&#9733;</label>
+                                <input id="radio2" type="radio" asp-for="MyRating" name="MyRating" value="4" class="star" disabled />
+                                <label for="radio2">&#9733;</label>
+                                <input id="radio3" type="radio" asp-for="MyRating" name="MyRating" value="3" class="star" disabled />
+                                <label for="radio3">&#9733;</label>
+                                <input id="radio4" type="radio" asp-for="MyRating" name="MyRating" value="2" class="star" disabled />
+                                <label for="radio4">&#9733;</label>
+                                <input id="radio5" type="radio" asp-for="MyRating" name="MyRating" value="1" class="star" disabled />
+                                <label for="radio5">&#9733;</label>
+                            </div>
+                        </div>
+                        <div class="mt-3 mb-2">Comments:</div>
+                        <div>@Model.Comments</div>
+                        <div class="updateForm">
+                            <button id="updateInfo" class="btn myCardButton">Update Info</button>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn myCardButton ms-3" data-bs-toggle="modal" data-bs-target="#removeModal">
+                                Remove Movie from Collections
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="removeModal" tabindex="-1" aria-labelledby="removeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="removeModalLabel">Remove Movie</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to remove this movie from your My Movies Collections?
+                                            <br />If you do you can search for the movie and add it back into your Collections.
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form asp-controller="Movies" asp-action="DeleteConfirmed" asp-route-id="@Model.Id" method="post">
+                                                <button class="btn myCardButton">Remove</button>
+                                            </form>
+                                            <button type="button" class="btn myCardButton ms-3" data-bs-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>  <!-- END Modal -->
+                        </div>
+                    </div>
+                    <div id="updateMovie" class="updateMovie">
+                        <h5>Update Info</h5>
+                        <form asp-controller="Movies" asp-action="UpdateMovie" asp-route-id="@Model.Id" method="post">
+                            @* <input type="hidden" asp-for="MovieId" /> *@
+                            <select name="collectionId" class="form-control" asp-items="@ViewBag.collectionId"></select>
+                            <div class="my-rating">
+                                <div class="rate-label">My Rating:</div>
+                                <div class="rating">
+                                    <input id="radio1a" type="radio" asp-for="MyRating" name="MyRating" value="5" class="star" />
+                                    <label for="radio1a">&#9733;</label>
+                                    <input id="radio2a" type="radio" asp-for="MyRating" name="MyRating" value="4" class="star" />
+                                    <label for="radio2a">&#9733;</label>
+                                    <input id="radio3a" type="radio" asp-for="MyRating" name="MyRating" value="3" class="star" />
+                                    <label for="radio3a">&#9733;</label>
+                                    <input id="radio4a" type="radio" asp-for="MyRating" name="MyRating" value="2" class="star" />
+                                    <label for="radio4a">&#9733;</label>
+                                    <input id="radio5a" type="radio" asp-for="MyRating" name="MyRating" value="1" class="star" />
+                                    <label for="radio5a">&#9733;</label>
+                                </div>
+                            </div>
+                            <div>
+                                <h5>Comments</h5>
+                                <textarea asp-for="@Model.Comments" rows="3"></textarea>
+                            </div>
+                            <button id="saveInfo" type="submit" class="btn myCardButton">Save</button>
+                            <button id="cancelInfo" class="btn myCardButton">Cancel</button>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <h4>Import movie to collection</h4>
+                    <form asp-controller="Movies" asp-action="Import" asp-route-id="@Model.MovieId" method="post">
+                        <select name="collectionId" class="form-control" asp-items="@ViewBag.collectionId"></select>
+                        <div class="my-rating">
+                            <div class="rate-label">My Rating:</div>
+                            <div class="rating">
+                                <input id="radio1" type="radio" asp-for="MyRating" name="MyRating" value="5" class="star" />
+                                <label for="radio1">&#9733;</label>
+                                <input id="radio2" type="radio" asp-for="MyRating" name="MyRating" value="4" class="star" />
+                                <label for="radio2">&#9733;</label>
+                                <input id="radio3" type="radio" asp-for="MyRating" name="MyRating" value="3" class="star" />
+                                <label for="radio3">&#9733;</label>
+                                <input id="radio4" type="radio" asp-for="MyRating" name="MyRating" value="2" class="star" />
+                                <label for="radio4">&#9733;</label>
+                                <input id="radio5" type="radio" asp-for="MyRating" name="MyRating" value="1" class="star" />
+                                <label for="radio5">&#9733;</label>
+                            </div>
+                        </div>
+                        <div>
+                            <h5>Comments</h5>
+                            <textarea asp-for="@Model.Comments" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn myCardButton">Import</button>
+                    </form>
+                }
             </div>
         </div>
         <div class="row mt-3 mb-2">
@@ -138,6 +242,8 @@
         </div>
     </div>
 }
+
+
 
 @section scripts {
     @*     <script>

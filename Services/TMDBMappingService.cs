@@ -145,13 +145,19 @@ namespace MoviePro.Services
         private MovieRating GetRating(Release_Dates dates)
         {
             var movieRating = MovieRating.NR;
-            var certification = dates.results.FirstOrDefault(r => r.iso_3166_1 == "US");
-            if (certification is not null)
+
+            if (dates is not null)
             {
-                var apiRating = certification.release_dates.FirstOrDefault(c => c.certification != "")?.certification.Replace("-", "");
-                if (!string.IsNullOrEmpty(apiRating))
+
+                var certification = dates.results.FirstOrDefault(r => r.iso_3166_1 == "US");
+
+                if (certification is not null)
                 {
-                    movieRating = (MovieRating)Enum.Parse(typeof(MovieRating), apiRating, true);
+                    var apiRating = certification.release_dates.FirstOrDefault(c => c.certification != "")?.certification.Replace("-", "");
+                    if (!string.IsNullOrEmpty(apiRating))
+                    {
+                        movieRating = (MovieRating)Enum.Parse(typeof(MovieRating), apiRating, true);
+                    }
                 }
             }
             return movieRating;

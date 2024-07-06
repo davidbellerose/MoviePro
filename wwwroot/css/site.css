@@ -12,22 +12,29 @@
 html {
   font-size: var(--font-size);
   position: relative;
-  min-height: 100%;
   color: var(--light-color);
+  height: 100%;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 60px;
+  /*margin-bottom: 60px;*/
   background-color: var(--background-color);
   color: var(--light-color);
+  height: 100%;
 }
 
+/*@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+        position: relative;
+        height: 100%;
+    }
+
+    body{
+        height: 100%;
+    }
+}*/
 h1, h2, h3, h4, h5, h6 {
   color: var(--accent-color);
 }
@@ -45,8 +52,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .header-custom {
-  height: 100%;
+  height: 150px;
   background-image: url("../images/header-background.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
 /*****************************************************************************************
@@ -197,9 +207,10 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 10;
 }
 
-#import {
+/*this will be the back to top button*/
+#btt {
   position: fixed;
-  top: 100px;
+  bottom: 80px;
   right: 15px;
   z-index: 50;
   width: 50px;
@@ -214,29 +225,30 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
   transition: all 0.3s ease-out;
 }
-#import i {
+#btt i {
   font-weight: 900;
   font-size: 1.5rem;
 }
 
-#import span {
+#btt span {
   position: absolute;
   right: 10px;
   opacity: 0;
   transition: all 0.3s ease-out;
 }
 
-#import:hover {
+#btt:hover {
   color: var(--dark-color);
   background-color: var(--accent-color);
-  width: 100px;
+  width: 130px;
   justify-content: start;
   padding-left: 0.5rem;
 }
-#import:hover span {
+#btt:hover span {
   opacity: 1;
 }
 
+/*borders for nav menu*/
 .border-top {
   border-top: 1px solid #e5e5e5;
 }
@@ -254,6 +266,10 @@ button.accept-policy {
   line-height: inherit;
 }
 
+.navbar-collapse {
+  padding-left: 5px;
+}
+
 .nav-pills .active, .nav-pills .nav-link .active, .nav-pills .show > .nav-link {
   color: var(--bs-nav-pills-link-active-color) !important;
   background-color: var(--bs-nav-pills-link-active-bg) !important;
@@ -261,11 +277,11 @@ button.accept-policy {
 
 a, a:active, a:focus, .nav-link, .nav-link, .nav-link:active, .nav-link:focus {
   color: var(--accent-color);
+  white-space: nowrap;
 }
 
-a:hover, .nav-link:hover, .nav-link a:hover {
+.nav-item:hover {
   /*border: 1px solid var(--accent-color);*/
-  border-radius: 5px;
   color: var(--background-color);
   background-color: var(--accent-color);
 }
@@ -278,8 +294,12 @@ a:hover, .nav-link:hover, .nav-link a:hover {
   height: 38px;
 }
 
+#searchFocus{
+    /*min-width: 100px;*/
+}
+
 .search-button i {
-  color: var(--accent-color);
+    color: var(--accent-color);
 }
 
 .search-button:hover {
@@ -292,6 +312,38 @@ a:hover, .nav-link:hover, .nav-link a:hover {
 
 .dropdown-menu {
   background-color: var(--background-color);
+  display: none;
+  border-radius: 0px;
+  -moz-column-count: 4;
+  -moz-column-gap: 20px;
+  -webkit-column-count: 4;
+  -webkit-column-gap: 20px;
+  column-count: 4;
+  column-gap: 20px;
+  border-top: 1px solid var(--accent-color);
+  border-bottom: 1px solid var(--accent-color);
+}
+
+@media (max-width: 556px) {
+  .dropdown-menu {
+    -moz-column-count: 3;
+    -webkit-column-count: 3;
+    column-count: 3;
+  }
+}
+@media (max-width: 500px) {
+  .dropdown-menu {
+    -moz-column-count: 2;
+    -webkit-column-count: 2;
+    column-count: 2;
+  }
+}
+.dropdown {
+  cursor: pointer;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
 }
 
 .dropdown-sub {
@@ -405,9 +457,146 @@ a.navbar-brand {
   color: var(--background-color) !important;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 /*****************************************************************************************
 
-	CAROUSEL                                                                  FOOTER
+	IMPORT FORM                                                               IMPORT FORM
+
+*****************************************************************************************/
+.import-form {
+  color: var(--accent-color);
+  background-color: var(--dark-color);
+  border-top: 1px solid var(--accent-color);
+  border-bottom: 1px solid var(--accent-color);
+  padding: 1rem 0;
+  margin: 1rem 0;
+}
+.import-form button {
+  padding: 0.5rem;
+}
+.import-form form {
+  margin-top: 1rem;
+}
+.import-form textarea {
+  width: 100%;
+}
+
+#myInfo {
+  display: block;
+}
+
+#updateMovie {
+  display: none;
+}
+
+.updateForm {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+.updateForm form {
+  padding: 0;
+  margin: 0;
+}
+.updateForm button {
+  padding: 0.5rem;
+}
+
+#removeModal .modal-content {
+  background-color: var(--background-color);
+  border: 1px solid var(--accent-color);
+}
+#removeModal .modal-content .modal-header, #removeModal .modal-content .modal-footer {
+  border-color: var(--accent-color);
+}
+#removeModal .modal-content .modal-header .btn-close {
+  color: var(--accent-color);
+  background-color: var(--background-color);
+  border: 1px solid var(--accent-color);
+  --bs-btn-close-opacity: 0.8;
+  --bs-btn-close-hover-opacity: 1;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+#removeModal .modal-content .modal-header .btn-close .bi::before {
+  font-size: 1.5rem !important;
+  font-weight: 900 !important;
+}
+#removeModal .modal-content .modal-footer {
+  align-items: start;
+}
+
+.my-rating {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+}
+.my-rating .rate-label {
+  margin-right: 1rem;
+  padding: 0;
+}
+
+.rating {
+  display: flex;
+  justify-content: end;
+  direction: rtl;
+  unicode-bidi: bidi-override;
+  text-align: center;
+}
+
+.rating .star {
+  display: none;
+}
+
+.rating label {
+  color: lightgray;
+  display: inline-block;
+  font-size: 22pt;
+  margin: 0 0px;
+  transition: transform 0.15s ease;
+}
+
+.rating label:hover {
+  transform: scale(1.35, 1.35);
+}
+
+.rating label:hover,
+.rating label:hover ~ label {
+  color: var(--accent-color);
+}
+
+.rating .star:checked ~ label {
+  color: var(--accent-color);
+}
+
+.rating-static {
+  display: flex;
+  justify-content: end;
+  direction: rtl;
+  unicode-bidi: bidi-override;
+  text-align: center;
+}
+.rating-static .star {
+  display: none;
+}
+.rating-static label {
+  color: lightgray;
+  display: inline-block;
+  font-size: 22pt;
+  margin: 0 0px;
+  transition: transform 0.15s ease;
+}
+.rating-static .star:checked ~ label {
+  color: var(--accent-color);
+}
+
+/*****************************************************************************************
+
+	CAROUSEL                                                            CAROUSEL
 
 *****************************************************************************************/
 /*This removes carousel and displays cards on small screens*/
@@ -573,9 +762,9 @@ a.navbar-brand {
   font-style: italic;
 }
 
-.myCardButton {
+.myCardButton, .myCardButton:active, .myCardButton:focus {
   background-color: #212121;
-  padding: 1rem;
+  padding: 0.5rem;
   display: inline-block;
   color: var(--accent-color);
   text-decoration: none;
@@ -583,10 +772,9 @@ a.navbar-brand {
   margin-top: 1rem;
 }
 
-.myCardButton.active, .myCardButton:hover, .myCardButton:focus {
+.myCardButton:hover {
   background-color: var(--accent-color);
   color: #212121;
-  border: 1px solid #212121;
   /*opacity: 0.8;*/
 }
 
@@ -639,47 +827,46 @@ a.navbar-brand {
   padding-top: 1rem;
 }
 
-/* trailer modal*/
+/* trailer modal*/ /*
 .holder {
-  width: 330px;
-  height: 250px;
-  position: relative;
-  margin-top: 2rem;
-  border: 2px solid var(--accent-color);
-  border-radius: 5px;
+    width: 330px;
+    height: 250px;
+    position: relative;
+    margin-top: 2rem;
+    border: 2px solid var(--accent-color);
+    border-radius: 5px;
 }
 
 .frame {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 .trailer-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 560%;
-  height: 50%;
-  cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 560%;
+    height: 50%;
+    cursor: pointer;
 }
 
 .modal-content button {
-  font-size: 1rem;
-  text-align: center;
-  color: var(--accent-color);
-  font-weight: bold;
-  background-color: #212121;
-  border: 2px solid var(--accent-color);
-  border-radius: 5px;
+    font-size: 1rem;
+    text-align: center;
+    color: var(--accent-color);
+    font-weight: bold;
+    background-color: #212121;
+    border: 1px solid var(--accent-color);
+    border-radius: 5px;
 }
 
 .modal-content button.active,
 .modal-content button:focus,
 .modal-content button:hover {
-  background-color: var(--accent-color);
-  color: #212121;
-}
-
+    background-color: var(--accent-color);
+    color: #212121;
+}*/
 /*****************************************************************************************
 
 	CRUD VIEWS                                                              CRUD VIEWS
@@ -694,4 +881,42 @@ a.navbar-brand {
 .crud-view input {
   margin-top: 0.5rem;
   margin-bottom: 1rem;
+}
+
+/*****************************************************************************************
+
+	LIBRARY VIEWS                                                  LIBRARY VIEWS
+
+*****************************************************************************************/
+.library-filter {
+  background-color: var(--dark-color);
+  border-top: 1px solid var(--accent-color);
+  border-bottom: 1px solid var(--accent-color);
+  padding: 0;
+  margin: 0;
+  color: var(--accent-color);
+  margin-bottom: 1rem;
+}
+.library-filter ul {
+  text-decoration: none;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-shrink: 4;
+  padding: 0.5rem;
+  margin: 0;
+}
+.library-filter ul span {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+.library-filter ul .line-break {
+  width: 100%;
+}
+.library-filter ul li {
+  list-style-type: none;
+  display: inline;
+  white-space: nowrap;
+  padding: 0 0.7rem;
 }

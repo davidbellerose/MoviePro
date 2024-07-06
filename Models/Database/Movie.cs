@@ -30,7 +30,7 @@ namespace MoviePro.Models.Database
         public float VoteAverage { get; set; }
 
         [Display(Name = "Poster")]
-        public byte[] Poster { get; set; }
+        public byte[]? Poster { get; set; }
         public string PosterType { get; set; }
 
         [Display(Name = "Backdrop")]
@@ -47,14 +47,13 @@ namespace MoviePro.Models.Database
         [Display(Name = "Backdrop Image")]
         public IFormFile BackdropFile { get; set; }
 
+        public string MyRating { get; set; } = string.Empty;
+
+        public string Comments { get; set; } = string.Empty;
+
 
         public ICollection<MovieCollection> MovieCollections { get; set; } = new HashSet<MovieCollection>();
         public ICollection<MovieCast> Cast { get; set; } = new HashSet<MovieCast>();
         public ICollection<MovieCrew> Crew { get; set; } = new HashSet<MovieCrew>();
-
-
-
-
-
     }
 }

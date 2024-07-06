@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using MoviePro.Data;
 using MoviePro.Models.Database;
 using MoviePro.Models.Settings;
 using MoviePro.Services.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,15 +32,26 @@ namespace MoviePro.Controllers
             _mappingService = tmdbMappingService;
         }
 
-        
+
         public IActionResult Index()
         {
             return View();
         }
 
-        public async Task<IActionResult> Library()
+        public async Task<IActionResult> Library(/*int? id*/)
         {
-            var movies = await _context.Movie.ToListAsync();
+            var movies = await _context.Movie.OrderBy(m => m.Title).ThenBy(m => m.ReleaseDate).ToListAsync();
+
+            //if (id is null)
+            //{
+            //    return View(movies);
+            //}
+            
+            //movies = await _context.Collection
+            //    .Include(m => m.MovieCollections)
+            //    .Where(m => m.MovieColl)
+
+            ViewData["Collections"] = _context.Collection.ToList();
             return View(movies);
         }
 
@@ -52,12 +65,12 @@ namespace MoviePro.Controllers
         //POST: The mapped(copy) API version
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Import(int id)
+        public async Task<IActionResult> Import(int id, int collectionId, Movie movieImport)
         {
             if (_context.Movie.Any(m => m.MovieId == id))
             {
                 var localMovie = await _context.Movie.FirstOrDefaultAsync(m => m.MovieId == id);
-                return RedirectToAction("Details", "Movies", new { id = localMovie.Id, local = true });
+                return RedirectToAction("Details", "Movies", new { id = localMovie.MovieId, local = true });
             }
 
             //this gets the movie with id from the api
@@ -66,15 +79,21 @@ namespace MoviePro.Controllers
             // this takes the movie just retreived from the api and puts it into an object
             var movie = await _mappingService.MapMovieDetailAsync(movieDetail);
 
+            movie.MyRating = movieImport.MyRating;
+            movie.Comments = movieImport.Comments;
+
             // the movie in the object is now added to the database
             _context.Add(movie);
             await _context.SaveChangesAsync();
 
             // adds movie to the default "All" collection
-            await AddToMovieCollection(movie.Id, _appSettings.MovieProSettings.DefaultCollection.Name);
+            //await AddToMovieCollection(movie.Id, _appSettings.MovieProSettings.DefaultCollection.Name);
+
+            // adds movie to collection from select list
+            await AddToMovieCollection(movie.Id, collectionId);
 
             //return RedirectToAction("Import");
-            return RedirectToAction("Details", "Movies", new { id = movie.Id, local = true });
+            return RedirectToAction("Details", "Movies", new { id = movie.MovieId, local = true });
         }
 
         public IActionResult Create()
@@ -125,7 +144,7 @@ namespace MoviePro.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,MovieId,Title,TagLine,Overview,RunTime,ReleaseDate,Rating,VoteAverage,Poster,PosterType,Backdrop,BackdropType,TailerUrl")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,MovieId,Title,TagLine,Overview,RunTime,ReleaseDate,Rating,VoteAverage,Poster,PosterType,Backdrop,BackdropType,TailerUrl, Comments, MyRating")] Movie movie)
         {
             if (id != movie.Id)
             {
@@ -150,10 +169,11 @@ namespace MoviePro.Controllers
 
                     _context.Update(movie);
                     await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MovieExists(movie.Id))
+                    if (!MovieExists(movie.MovieId))
                     {
                         return NotFound();
                     }
@@ -165,6 +185,57 @@ namespace MoviePro.Controllers
                 return RedirectToAction("Details", "Movies", new { id = movie.Id, local = true });
             }
             return View(movie);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateMovie(int id, int collectionId, string Comments, string MyRating)
+        {
+            var movie = _context.Movie.Find(id);
+            //if (id != movie.MovieId)
+            //{
+            //    return NotFound();
+            //}
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    //if (movie.PosterFile != null)
+                    //{
+                    //    movie.PosterType = movie.PosterFile.ContentType;
+                    //    movie.Poster = await _imageService.EncodeImageAsync(movie.PosterFile);
+                    //}
+
+                    //if (movie.BackdropFile != null)
+                    //{
+                    //    movie.BackdropType = movie.BackdropFile.ContentType;
+                    //    movie.Backdrop = await _imageService.EncodeImageAsync(movie.BackdropFile);
+                    //}
+                    if (movie != null)
+                    {
+                        movie.MyRating = MyRating;
+                        movie.Comments = Comments;
+                        _context.Update(movie);
+                        await _context.SaveChangesAsync();
+                        await UpdateMovieCollection(id, collectionId);
+                    }
+                    return RedirectToAction("Details", "Movies", new { id = movie.MovieId, local = true });
+
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!MovieExists(movie.MovieId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            return RedirectToAction("Details", "Movies", new { id = movie.Id, local = true });
         }
 
         public async Task<IActionResult> Delete(int? id, bool local = false)
@@ -198,7 +269,7 @@ namespace MoviePro.Controllers
             return View(movie);
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -210,14 +281,31 @@ namespace MoviePro.Controllers
 
         private bool MovieExists(int id)
         {
-            return _context.Movie.Any(e => e.Id == id);
+            var movie = _context.Movie.Where(e => e.MovieId == id).ToList();
+
+            if (movie.Count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+            //return _context.Movie.Any(e => e.MovieId == id);
         }
 
         public async Task<IActionResult> Details(int? id, bool local = false)
         {
+            //var movieCollection = "";
+
             if (id == null)
             {
                 return NotFound();
+            }
+
+            if (MovieExists(id.Value))
+            {
+                local = true;
             }
 
             Movie movie = new();
@@ -226,7 +314,31 @@ namespace MoviePro.Controllers
                 movie = await _context.Movie
                     .Include(m => m.Cast)
                     .Include(m => m.Crew)
-                    .FirstOrDefaultAsync(m => m.Id == id);
+                    .Include(m => m.MovieCollections)
+                        .ThenInclude(m => m.Collection)
+                    .FirstOrDefaultAsync(m => m.MovieId == id);
+
+                // list of collections
+                var collection = _context.Collection.ToList();
+
+                
+                // join table record for the collection for this movie
+                var thisCollection = _context.MovieCollection.Where(m => m.MovieId == movie.Id);
+
+                var thisId = thisCollection.Select(m => m.CollectionId).FirstOrDefault();
+
+                // thisCollection.CollectionId == collection.id
+                // need the name of the collection for this movie
+
+                var cName = collection.Where(m => m.Id == thisId).ToString();
+
+                var name = cName[0].ToString();
+
+                var collectionId = collection.Select(m => m.Name).FirstOrDefault();
+
+
+                ViewData["collectionId"] = cName;
+
             }
             else
             {
@@ -238,6 +350,10 @@ namespace MoviePro.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["CollectionId"] = new SelectList(_context.Collection, "Id", "Name");
+
+            //ViewData["Collection"] = collection.;
 
             ViewData["Local"] = local;
             return View(movie);
@@ -268,5 +384,17 @@ namespace MoviePro.Controllers
 
             await _context.SaveChangesAsync();
         }
+
+        private async Task UpdateMovieCollection(int id, int collcetionId)
+        {
+            var collection = await _context.MovieCollection.Where(c => c.MovieId == id).FirstOrDefaultAsync();
+
+
+            collection.CollectionId = collcetionId;
+            collection.MovieId = id;
+            //await _context.Update(collection);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

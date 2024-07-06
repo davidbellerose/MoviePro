@@ -115,6 +115,68 @@ cardHeader.forEach(header => {
     myObserver.observe(header);
 });
 
-// *********************************************************************************
-// **   end RESPONSIVE TEXT                                        end RESPONSIVE TEXT
-// ********************************************************************************
+
+// **************************************************
+//
+//              BACK TO TOP BUTTON
+//
+// **************************************************
+
+$(document).ready(function () {
+    $("h1").delay("1000").fadeIn();
+    // hide #back-top first
+    $("#btt").hide();
+
+    // fade in #back-top
+    $(function () {
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 200) {
+                $('#btt').fadeIn(800);
+            } else {
+                $('#btt').fadeOut(400);
+
+            }
+        });
+
+        // scroll body to 0px on click
+        $('a#btt').click(function () {
+            $('body,html').animate({
+                scrollTop: 0
+            }, 800);
+            return false;
+        });
+    });
+});
+
+// **************************************************
+//
+//              DETAIL VIEW UPDATE INFO FORMS
+//
+// **************************************************
+
+document.getElementById('updateInfo').addEventListener('click', (e) => {
+    e.preventDefault();
+    var myInfo = document.getElementById('myInfo');
+    var updateMovie = document.getElementById('updateMovie');
+
+    updateMovie.style.display = 'block';
+    myInfo.style.display = 'none';
+});
+
+document.getElementById('saveInfo').addEventListener('click', () => {
+    var myInfo = document.getElementById('myInfo');
+    var updateMovie = document.getElementById('updateMovie');
+
+    myInfo.style.display = 'block';
+    updateMovie.style.display = 'none';
+});
+
+document.getElementById('cancelInfo').addEventListener('click', (e) => {
+    e.preventDefault();
+    var myInfo = document.getElementById('myInfo');
+    var updateMovie = document.getElementById('updateMovie');
+
+    myInfo.style.display = 'block';
+    updateMovie.style.display = 'none';
+});
+

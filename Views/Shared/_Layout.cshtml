@@ -13,9 +13,15 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    <header class="px-3 py-5 mb-5 header-custom">
+    <a id="btt" href="#">
+        <div class="btt-icon">
+            <i class="bi bi-arrow-up"></i>
+        </div>
+        <span>Back to Top</span>
+    </a>
+    <header class="px-3 py-5 header-custom">
         <nav id="stickyNav" class="navbar navbar-expand-sm navstyle navbar-custom">
-            <div class="container">
+            @* <div class="container"> *@
                 @* <a class="navbar-brand p-0" asp-area="" asp-controller="Home" asp-action="Index">Home</a> *@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -28,7 +34,7 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link" aria-expanded="false">
                                 Browse
                             </a>
                             <ul class="dropdown-menu">
@@ -58,10 +64,13 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Collections" asp-action="Index">Collections</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Movies" asp-action="Library">My Movies</a>
+                            </li>
                         }
                     </ul>
-                    <div class="input-group p-0 m-0 d-flex align-items-center flex-nowrap justify-content-start">
-                        <form asp-action="FindMovies" method="post" class="d-flex">
+                    <div class="search-bar input-group p-0 m-0 d-flex align-items-center flex-nowrap justify-content-start">
+                        <form asp-action="FindMovies" asp-controller="Home" method="post" class="d-flex">
                             <div class="form-outline" data-mdb-input-init>
                                 <input id="searchFocus" name="searchTerm" type="search" class="search-input" placeholder="Search Movie Name..." />
                             </div>
@@ -74,14 +83,14 @@
                     </div>
                     <partial name="_LoginPartial" />
                 </div>
-            </div>
+            @* </div> *@
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+     @* <div class="container"> *@
+        <main role="main" class="p-3">
             @RenderBody()
         </main>
-    </div>
+    @* </div> *@
 
 @*     <footer class="footer-custom footer text-muted">
         <div class="container">

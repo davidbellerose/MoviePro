@@ -1,44 +1,30 @@
 ﻿
-
+Movie Muster
 
 ************************ 
 TODO
 ***********************
-MoviesController.Details method check if already in db and flag if so
-        and remove import button or change its icon and message
-        above title: movie in xxx collection
-        detail view should have the dropdown that will import it to the selected collection
-        in detail title section; form for import as above
-        if already in, detail will go to db version
-        title block will show personal rating(not yet rated) and expandable notes.
-        might need componant view
-        change to watch collection after done watching.
-back to top
-seeder
 readme
-Movie Muster
+pagination for my movies
+search button on nav responsive, it squishes
+    may have to make 2 and swap hiding on media query
 
 ***************************
-IMPORT LIBRARY - The library is the imported movies, rename to My Movies
+    BUGS
 ****************************
-MoviesController.Library method doesn't have view, may need to scaffold this controller
-the library/view is the local db list
-	clicking on its detail goes to api detail
-	the import view needs a select for collection
-	maybe watch list can be a collection name
-		with watched bool.
-MoviesController is for the api movies
-i think i need library views scaffolded with crud
-i might need a library controller
-but library method is in moviescontroller
-	which imports to db
+My Movies FILTER
+ ** MoviesController.Library, can't get movies by collection
+
+MoviesController.Details, can't get collection name to display in view
 
 
 ***************************
     FEATURES
 ****************************
-	have personal rating
-    have comments
+seeder
+movies you want to watch go in the watch list, after watching, 
+    change catagory to whatever, which shows it was watched
+
 
 
 https://learn.coderfoundry.com/products/the-complete-net-coding-bootcamp/categories/2147908385/posts/2152112657

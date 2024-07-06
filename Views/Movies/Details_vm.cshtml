@@ -1,0 +1,234 @@
+﻿@using MoviePro.Models.Database;
+@using MoviePro.Services.Interfaces
+@using MoviePro.Models.ViewModels
+@inject IImageService _imageService
+@model DetailsVM
+
+@{
+    ViewData["Title"] = "Movie Details";
+    var collectionId = ViewData["CollectionId"];
+    var local = ViewData["Local"].ToString();
+    // var collectionName = ViewData["Collection"];
+}
+
+
+<!-- movie -->
+<div class="row row-cols-md-2 movie-detail">
+    <div class="col">
+        <div>
+            @if (Model.Movie.Poster.Length == 33)
+            {
+                <img src="~/images/anika-de-klerk-dWYjy9zIiF8-unsplash.jpg" class="img-fluid" alt="...">
+            }
+            else
+            {
+                <img src="@_imageService.DecodeImage(Model.Movie.Poster, Model.Movie.PosterType)" class="img-fluid" alt="@Model.Movie.Title image" />
+            }
+        </div>
+    </div>
+    <div class="col">
+        <div class="row">
+            <div class="col h5">
+                <span class="font-weight-bolder mr-2">Title:</span> @Model.Movie.Title
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col h5">
+                <span class="font-weight-bolder mr-2">Released:</span> @Model.Movie.ReleaseDate.ToString("MMM dd, yyyy");
+            </div>
+        </div>
+        <div class="row">
+            <div class="col h5">
+                <span class="font-weight-bolder mr-2">Rating:</span> @Model.Movie.Rating;
+            </div>
+        </div>
+        <div class="row">
+            <div class="col h5">
+                <span class="font-weight-bolder mr-2">Reviews:</span> @Model.Movie.VoteAverage / 10;
+            </div>
+        </div>
+        <div class="row import-form">
+            <div class="col h5">
+                @* <span class="mb-2">@local: @Model.MovieId;  @Model.Id; </span> *@
+                @if (local == "True")
+                {
+                    <div>@Model.Collection.Name</div>
+                        <div class="my-rating">
+                            <div class="rate-label">My Rating:</div>
+                            <div class="rating-static">
+                            <input id="radio1" type="radio" asp-for="Movie.MyRating" name="MyRating" value="5" class="star" disabled />
+                                <label for="radio1">&#9733;</label>
+                            <input id="radio2" type="radio" asp-for="Movie.MyRating" name="MyRating" value="4" class="star" disabled />
+                                <label for="radio2">&#9733;</label>
+                            <input id="radio3" type="radio" asp-for="Movie.MyRating" name="MyRating" value="3" class="star" disabled />
+                                <label for="radio3">&#9733;</label>
+                            <input id="radio4" type="radio" asp-for="Movie.MyRating" name="MyRating" value="2" class="star" disabled />
+                                <label for="radio4">&#9733;</label>
+                            <input id="radio5" type="radio" asp-for="Movie.MyRating" name="MyRating" value="1" class="star" disabled />
+                                <label for="radio5">&#9733;</label>
+                            </div>
+                        </div>
+                        <div class="mt-3 mb-2">Comments:</div>
+                    <div>@Model.Movie.Comments</div>
+                    <button class="btn myCardButton">Remove</button>
+                    <h4>Import movie to collection</h4>
+                    <form asp-controller="Movies" asp-action="UpdateMovie" asp-route-id="@Model.Movie.Id" method="post">
+                        @* <input type="hidden" asp-for="MovieId" /> *@
+                        <select name="collectionId" class="form-control" asp-items="@ViewBag.collectionId"></select>
+                        <div class="my-rating">
+                            <div class="rate-label">My Rating:</div>
+                            <div class="rating">
+                                <input id="radio1a" type="radio" asp-for="Movie.MyRating" name="MyRating" value="5" class="star" />
+                                <label for="radio1a">&#9733;</label>
+                                <input id="radio2a" type="radio" asp-for="Movie.MyRating" name="MyRating" value="4" class="star" />
+                                <label for="radio2a">&#9733;</label>
+                                <input id="radio3a" type="radio" asp-for="Movie.MyRating" name="MyRating" value="3" class="star" />
+                                <label for="radio3a">&#9733;</label>
+                                <input id="radio4a" type="radio" asp-for="Movie.MyRating" name="MyRating" value="2" class="star" />
+                                <label for="radio4a">&#9733;</label>
+                                <input id="radio5a" type="radio" asp-for="Movie.MyRating" name="MyRating" value="1" class="star" />
+                                <label for="radio5a">&#9733;</label>
+                            </div>
+                        </div>
+                        <div>
+                            <h5>Comments</h5>
+                            <textarea asp-for="@Model.Movie.Comments" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn myCardButton">Update</button>
+                    </form>
+                }
+                else
+                {
+                    <h4>Import movie to collection</h4>
+                    <form asp-controller="Movies" asp-action="Import" asp-route-id="@Model.Movie.MovieId" method="post">
+                        <select name="collectionId" class="form-control" asp-items="@ViewBag.collectionId"></select>
+                        <div class="my-rating">
+                            <div class="rate-label">My Rating:</div>
+                            <div class="rating">
+                                <input id="radio1" type="radio" asp-for="Movie.MyRating" name="MyRating" value="5" class="star" />
+                                <label for="radio1">&#9733;</label>
+                                <input id="radio2" type="radio" asp-for="Movie.MyRating" name="MyRating" value="4" class="star" />
+                                <label for="radio2">&#9733;</label>
+                                <input id="radio3" type="radio" asp-for="Movie.MyRating" name="MyRating" value="3" class="star" />
+                                <label for="radio3">&#9733;</label>
+                                <input id="radio4" type="radio" asp-for="Movie.MyRating" name="MyRating" value="2" class="star" />
+                                <label for="radio4">&#9733;</label>
+                                <input id="radio5" type="radio" asp-for="Movie.MyRating" name="MyRating" value="1" class="star" />
+                                <label for="radio5">&#9733;</label>
+                            </div>
+                        </div>
+                        <div>
+                            <h5>Comments</h5>
+                            <textarea asp-for="@Model.Movie.Comments" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn myCardButton">Import</button>
+                    </form>
+                }
+            </div>
+        </div>
+        <div class="row mt-3 mb-2">
+            <div class="col">
+                <span class="font-weight-bolder h5">Overview:</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span class="h5 ml-4">@Model.Movie.Overview</span>
+            </div>
+        </div>
+        <div>
+            <!-- trailer -->
+            <div class="header-text">
+                <span>Trailer</span>
+            </div>
+            @if (Model.Movie.TrailerUrl is null)
+            {
+
+            }
+            else
+            {
+                var key = Model.Movie.TrailerUrl.Split("=").Last();
+                var ysource = $"https://www.youtube.com/watch?v={key}";
+                <div>If your browser blocks the video, <a href="@ysource" target="_blank">click here</a></div>
+            }
+            <div class="holder">
+                @if (Model.Movie.TrailerUrl is null)
+                {
+                    <h4>No Trailer Available</h4>
+                }
+                else
+                {
+                    var key = Model.Movie.TrailerUrl.Split("=").Last();
+                    var source = $"https://www.youtube.com/embed/{key}";
+                    <iframe width="320" height="240" src="@source" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    @* <div class="trailer-overlay trigger" src="@source" data-bs-target="#videoModal" data-bs-toggle="modal"></div> *@
+                }
+            </div>
+
+            <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModal" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <button type="button" class="btn-block p-2" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">Close</span>
+                        </button>
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item" src="" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- trailer end-->
+        </div>
+    </div>
+</div>
+
+<!-- cast -->
+<div class="row movie-detail hr">
+    <div class="col">
+        <span class="h3 font-weight-bolder">Cast</span>
+    </div>
+</div>
+
+@foreach (var cast in Model.Movie.Cast.Take(20))
+{
+    <div class="row">
+        <div class="col">
+            <div class="card mb-3 bg-transparent">
+                <div class="row no-gutters">
+                    <div class="col-md-2">
+                        <img src="@cast.ImageUrl" class="img-fluid align-middle text-secondary" style="width: 10rem;" alt="No Image Available">
+                    </div>
+                    <div class="col-md-10">
+                        <div class="card-body bg-transparent">
+                            <h5 class="card-title header-text"><a asp-controller="Actors" asp-action="Details" asp-route-id="@cast.CastID">@cast.Name</a></h5>
+                            <p class="card-text text-light">as: @cast.Character</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts {
+    @*     <script>
+        $(document).ready(function () {
+            autoPlayYouTubeModal();
+        });
+
+        function autoPlayYouTubeModal() {
+            var trigger = $('.trigger');
+            trigger.click(function (e) {
+                e.preventDefault();
+                var theModal = $(this).data("bs-target");
+                var videoSRC = $(this).attr("src");
+                var videoSRCauto = videoSRC + "?autoplay=1";
+                $(theModal + ' iframe').attr('src', videoSRCauto);
+                $(theModal).on('hidden.bs.modal', function (e) {
+                    $(theModal + ' iframe').attr('src', '');
+                });
+            });
+        };
+    </script> *@
+}
