@@ -18,7 +18,7 @@ html {
 
 body {
   /* Margin bottom by footer height */
-  /*margin-bottom: 60px;*/
+  margin-bottom: 60px;
   background-color: var(--background-color);
   color: var(--light-color);
   height: 100%;
@@ -294,12 +294,34 @@ a, a:active, a:focus, .nav-link, .nav-link, .nav-link:active, .nav-link:focus {
   height: 38px;
 }
 
-#searchFocus{
-    /*min-width: 100px;*/
+.search-bar {
+  display: block !important;
 }
 
+.search-bar2 {
+  display: none !important;
+}
+
+@media (max-width: 772px) {
+  .search-bar {
+    display: none !important;
+  }
+  .search-bar2 {
+    display: block !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+}
+@media (max-width: 575px) {
+  .search-bar {
+    display: block !important;
+  }
+  .search-bar2 {
+    display: none !important;
+  }
+}
 .search-button i {
-    color: var(--accent-color);
+  color: var(--accent-color);
 }
 
 .search-button:hover {

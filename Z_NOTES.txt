@@ -6,8 +6,6 @@ TODO
 ***********************
 readme
 pagination for my movies
-search button on nav responsive, it squishes
-    may have to make 2 and swap hiding on media query
 
 ***************************
     BUGS

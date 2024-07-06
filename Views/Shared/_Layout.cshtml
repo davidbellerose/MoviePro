@@ -80,11 +80,23 @@
                                 </button>
                             </div>
                         </form>
-                    </div>
+                </div>
                     <partial name="_LoginPartial" />
                 </div>
             @* </div> *@
         </nav>
+        <div class="search-bar2 input-group p-0 m-0 d-flex align-items-center flex-nowrap justify-content-center">
+            <form asp-action="FindMovies" asp-controller="Home" method="post" class="d-flex">
+                <div class="form-outline" data-mdb-input-init>
+                    <input id="searchFocus2" name="searchTerm" type="search" class="search-input" placeholder="Search Movie Name..." />
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                    <button style="height:40px;" type="submit" class="search-button mt-0" data-mdb-ripple-init>
+                        <i class="bi bi-search mb-3"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
     </header>
      @* <div class="container"> *@
         <main role="main" class="p-3">

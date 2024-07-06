@@ -314,7 +314,34 @@ a, a:active, a:focus, .nav-link, .nav-link, .nav-link:active, .nav-link:focus {
 }
 
 .search-bar{
-    min-width: 80px;
+    display: block !important;
+}
+
+.search-bar2{
+    display: none !important;
+}
+
+@media (max-width: 772px){
+    .search-bar {
+        display: none !important;
+    }
+
+    .search-bar2 {
+        display: block !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+}
+
+@media (max-width: 575px) {
+    .search-bar {
+        display: block !important;
+    }
+
+    .search-bar2 {
+        display: none !important;
+    }
+}
 
 .search-button i{
     color: var(--accent-color);
