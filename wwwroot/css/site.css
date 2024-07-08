@@ -635,21 +635,34 @@ a.navbar-brand {
     margin: 0 2rem;
   }
 }
+.carousel a {
+  padding: 0;
+  margin: 0;
+}
+.carousel a span {
+  padding: 0;
+  margin: 0;
+}
+
 .carousel-indicators {
   position: relative;
 }
 
+.carousel-indicators [data-bs-target] {
+  background-color: var(--accent-color);
+}
+
 .carousel-control-prev {
-  margin-left: -10%;
   color: var(--accent-color);
-  font-size: 40px;
+  font-size: 30px;
   text-decoration: none;
+  padding: 0;
+  margin: 0;
 }
 
 .carousel-control-next {
-  margin-right: -10%;
   color: var(--accent-color);
-  font-size: 40px;
+  font-size: 30px;
   text-decoration: none;
 }
 
@@ -657,10 +670,15 @@ a.navbar-brand {
   background: transparent;
 }
 
+.carousel-control-prev,
+.carousel-control-next {
+  width: 0;
+  position: absolute;
+  bottom: 30%;
+}
+
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-  height: 100px;
-  width: 100px;
   color: var(--accent-color);
   background-size: 100%, 100%;
   background-image: none;
@@ -669,14 +687,18 @@ a.navbar-brand {
 
 .carousel-control-next-icon:after {
   content: ">";
-  font-size: 55px;
+  font-size: 40px;
   color: var(--accent-color);
+  padding: 0;
+  margin: 0;
 }
 
 .carousel-control-prev-icon:after {
   content: "<";
-  font-size: 55px;
+  font-size: 40px;
   color: var(--accent-color);
+  padding: 0;
+  margin: 0;
 }
 
 .carousel-indicators li::marker {
@@ -941,4 +963,21 @@ a.navbar-brand {
   display: inline;
   white-space: nowrap;
   padding: 0 0.7rem;
+}
+
+.pager {
+  margin-top: 1rem;
+}
+
+.pagination {
+  --bs-pagination-color: var(--accent-color);
+  --bs-pagination-border-color: var(--accent-color);
+  --bs-pagination-bg: var(--background-color);
+  --bs-pagination-hover-color: var(--background-color);
+  --bs-pagination-border-radius: 0;
+  --bs-pagination-hover-border-color: var(--accent-color);
+  --bs-pagination-hover-bg: var(--accent-color);
+  --bs-pagination-active-color: var(--background-color);
+  --bs-pagination-active-bg: var(--accent-color);
+  --bs-pagination-active-border-color: var(--accent-color);
 }

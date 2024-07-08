@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MoviePro.Data;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace MoviePro.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -90,24 +92,16 @@ namespace MoviePro.Controllers
 
         public async Task<IActionResult> BrowseMovies(string genre, string page)
         {
-            //const int count = 30;
 
             if (page is null)
             {
                 page = "1";
-                //Convert.ToInt32(page);
             }
 
-            if (genre == null) {
+            if (genre == null)
+            {
                 genre = "35";
             }
-            //else
-            //{
-            //    var newPage = Convert.ToInt32(page);
-            //    newPage = newPage + 1;
-            //    page = newPage.ToString();
-
-            //}
 
             var data = new LandingPageVM()
             {
@@ -119,25 +113,20 @@ namespace MoviePro.Controllers
             };
             ViewData["Genre"] = genre;
 
-            //var newPage = Convert.ToInt32(page);
-            //newPage = newPage + 1;
-            //page = newPage.ToString();
-
             ViewData["Page"] = page;
             return View(data);
         }
 
-        
+
         public async Task<IActionResult> FindMovies(string searchTerm, string page)
         {
 
             if (page is null)
             {
                 page = "1";
-                //Convert.ToInt32(page);
             }
-            //change input string; switch spaces with plus sign
-            if(searchTerm is null)
+
+            if (searchTerm is null)
             {
                 searchTerm = "matrix";
             }

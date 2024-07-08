@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MoviePro.Services.Interfaces;
 using System.Threading.Tasks;
 
 namespace MoviePro.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class ActorsController : Controller
     {
         private readonly IRemoteMovieService _tmdbMovieService;

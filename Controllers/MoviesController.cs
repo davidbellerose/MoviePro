@@ -6,15 +6,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MoviePro.Data;
+using MoviePro.Models;
 using MoviePro.Models.Database;
 using MoviePro.Models.Settings;
+using MoviePro.Models.ViewModels;
 using MoviePro.Services.Interfaces;
+using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace MoviePro.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class MoviesController : Controller
     {
         private readonly AppSettings _appSettings;
@@ -38,21 +44,28 @@ namespace MoviePro.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Library(/*int? id*/)
+        public async Task<IActionResult> Library(int pg = 1)
         {
+            // original, no prameters in signature
             var movies = await _context.Movie.OrderBy(m => m.Title).ThenBy(m => m.ReleaseDate).ToListAsync();
-
-            //if (id is null)
-            //{
-            //    return View(movies);
-            //}
-            
-            //movies = await _context.Collection
-            //    .Include(m => m.MovieCollections)
-            //    .Where(m => m.MovieColl)
-
             ViewData["Collections"] = _context.Collection.ToList();
-            return View(movies);
+            //return View(movies);
+            // end original
+
+            int pageSize = 4;
+            if (pg < 1)
+            {
+                pg = 1;
+            }
+
+            int recsCount = movies.Count();
+            var pager = new Pager(recsCount, pg, pageSize);
+            int recSkip = (pg - 1) * pageSize;
+            var data = movies.Skip(recSkip).Take(pager.PageSize).ToList();
+            this.ViewBag.Pager = pager;
+
+            return View(data);
+
         }
 
         //GET: The mapped(copy) API version
@@ -90,6 +103,7 @@ namespace MoviePro.Controllers
             //await AddToMovieCollection(movie.Id, _appSettings.MovieProSettings.DefaultCollection.Name);
 
             // adds movie to collection from select list
+            // the select list default is "All"
             await AddToMovieCollection(movie.Id, collectionId);
 
             //return RedirectToAction("Import");
@@ -201,6 +215,7 @@ namespace MoviePro.Controllers
             {
                 try
                 {
+                    // The poster is handled in the view, showing a default image if null
                     //if (movie.PosterFile != null)
                     //{
                     //    movie.PosterType = movie.PosterFile.ContentType;
@@ -294,16 +309,14 @@ namespace MoviePro.Controllers
             //return _context.Movie.Any(e => e.MovieId == id);
         }
 
-        public async Task<IActionResult> Details(int? id, bool local = false)
+        public async Task<IActionResult> Details(int id, bool local = false)
         {
-            //var movieCollection = "";
-
-            if (id == null)
+            if (String.IsNullOrEmpty(id.ToString()))
             {
                 return NotFound();
             }
 
-            if (MovieExists(id.Value))
+            if (MovieExists(id))
             {
                 local = true;
             }
@@ -317,32 +330,10 @@ namespace MoviePro.Controllers
                     .Include(m => m.MovieCollections)
                         .ThenInclude(m => m.Collection)
                     .FirstOrDefaultAsync(m => m.MovieId == id);
-
-                // list of collections
-                var collection = _context.Collection.ToList();
-
-                
-                // join table record for the collection for this movie
-                var thisCollection = _context.MovieCollection.Where(m => m.MovieId == movie.Id);
-
-                var thisId = thisCollection.Select(m => m.CollectionId).FirstOrDefault();
-
-                // thisCollection.CollectionId == collection.id
-                // need the name of the collection for this movie
-
-                var cName = collection.Where(m => m.Id == thisId).ToString();
-
-                var name = cName[0].ToString();
-
-                var collectionId = collection.Select(m => m.Name).FirstOrDefault();
-
-
-                ViewData["collectionId"] = cName;
-
             }
             else
             {
-                var movieDetail = await _movieService.MovieDetailAsync(id.Value);
+                var movieDetail = await _movieService.MovieDetailAsync(id);
                 movie = await _mappingService.MapMovieDetailAsync(movieDetail);
             }
 
@@ -351,10 +342,25 @@ namespace MoviePro.Controllers
                 return NotFound();
             }
 
+
+            if (local)
+            {
+                // need to get collection id from moviecollections for movieid
+                var collectionId = _context.MovieCollection.Where(m => m.Movie.Id == movie.Id).Select(m => m.CollectionId).ToList();
+
+                // there is only one in the list so take the first index
+                var cId = collectionId[0];
+
+                // now I need the name of the collection
+                var collectionName = _context.Collection.Where(m => m.Id == cId).Select(m => m.Name).ToList();
+
+                // only one in the list so take the first index
+                var cName = collectionName[0];
+
+                ViewData["cName"] = cName;
+            }
+            
             ViewData["CollectionId"] = new SelectList(_context.Collection, "Id", "Name");
-
-            //ViewData["Collection"] = collection.;
-
             ViewData["Local"] = local;
             return View(movie);
         }

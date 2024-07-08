@@ -148,35 +148,3 @@ $(document).ready(function () {
     });
 });
 
-// **************************************************
-//
-//              DETAIL VIEW UPDATE INFO FORMS
-//
-// **************************************************
-
-document.getElementById('updateInfo').addEventListener('click', (e) => {
-    e.preventDefault();
-    var myInfo = document.getElementById('myInfo');
-    var updateMovie = document.getElementById('updateMovie');
-
-    updateMovie.style.display = 'block';
-    myInfo.style.display = 'none';
-});
-
-document.getElementById('saveInfo').addEventListener('click', () => {
-    var myInfo = document.getElementById('myInfo');
-    var updateMovie = document.getElementById('updateMovie');
-
-    myInfo.style.display = 'block';
-    updateMovie.style.display = 'none';
-});
-
-document.getElementById('cancelInfo').addEventListener('click', (e) => {
-    e.preventDefault();
-    var myInfo = document.getElementById('myInfo');
-    var updateMovie = document.getElementById('updateMovie');
-
-    myInfo.style.display = 'block';
-    updateMovie.style.display = 'none';
-});
-

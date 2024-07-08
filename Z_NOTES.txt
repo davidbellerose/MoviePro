@@ -4,8 +4,11 @@ Movie Muster
 ************************ 
 TODO
 ***********************
+
 readme
-pagination for my movies
+brand and logo
+host on railway
+add to portfolio
 
 ***************************
     BUGS
@@ -19,6 +22,7 @@ MoviesController.Details, can't get collection name to display in view
 ***************************
     FEATURES
 ****************************
+browse menu refactor to loop through tmdb genres instead of hard code links
 seeder
 movies you want to watch go in the watch list, after watching, 
     change catagory to whatever, which shows it was watched

@@ -38,9 +38,9 @@
 
 }
 
-@if (Model.FindMovies.results is null)
+@if (Model.FindMovies.results is null || Model.FindMovies.results.Count() == 0)
 {
-    <h2>No More Movies.</h2>
+    <h2>No Titles match your search term.</h2>
 }
 else
 {

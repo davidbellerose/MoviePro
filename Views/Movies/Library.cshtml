@@ -1,12 +1,19 @@
 ﻿@model IEnumerable<MoviePro.Models.Database.Movie>
 @using MoviePro.Services.Interfaces
 @using MoviePro.Models.Database
-@using MoviePro.Extensions
 @inject IImageService _imageService
 
 @{
     ViewData["Title"] = "My Movies";
     // var collection = ViewData["Collections"].ToString();
+
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
 }
 
 
@@ -17,6 +24,7 @@
 else
 {
     @* filter *@
+    @* check pagination anchor at bottom. can apply active class to currently selected filter*@
     <div class="row library-filter">
         <div class="col">
             <ul>
@@ -60,6 +68,40 @@ else
         </div>
     </div>
 }
+@* <partial name="_Pager.cshtml" model="@pager"/> *@
+
+<div class="pager">
+    @if (pager.TotalPages > 0)
+    {
+        <ul class="pagination justify-content-end">
+            @if (pager.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-pg="1">First</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-pg="@(pager.CurrentPage - 1)">Previous</a>
+                </li>
+            }
+            @for (var pge = pager.StartPage; pge < pager.EndPage + 1; pge++)
+            {
+                <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-pg="@pge">@pge</a>
+                </li>
+            }
+            @if (pager.CurrentPage < pager.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-pg="@(pager.CurrentPage + 1)">Next</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-pg="@(pager.TotalPages)">Last</a>
+                </li>
+            }
+        </ul>
+    }
+</div>
+
 
 @*
 <table class="table">
