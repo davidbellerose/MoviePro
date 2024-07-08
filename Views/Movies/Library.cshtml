@@ -1,11 +1,13 @@
-﻿@model IEnumerable<MoviePro.Models.Database.Movie>
+﻿@* @model IEnumerable<MoviePro.Models.Database.Movie> *@
+@model IEnumerable<MoviePro.Models.Database.MovieCollection>
 @using MoviePro.Services.Interfaces
 @using MoviePro.Models.Database
 @inject IImageService _imageService
 
 @{
     ViewData["Title"] = "My Movies";
-    // var collection = ViewData["Collections"].ToString();
+    var collection = ViewData["Collections"].ToString();
+    var activeFilter = ViewData["Filter"].ToString();
 
     Pager pager = new Pager();
     int pageNo = 0;
@@ -31,49 +33,57 @@ else
                 <span>Filter:</span>
                 @foreach (var item in (List<Collection>)ViewData["Collections"])
                 {
-                    <li><a class="nav-link-sub" asp-area="" asp-controller="Movies" asp-action="Library">@item.Name</a></li>
+                    if (item.Id.ToString() == activeFilter)
+                    {
+                        <li class="active"><a class="nav-link-sub" asp-area="" asp-controller="Movies" asp-action="Library" asp-route-filter="@item.Id">@item.Name</a></li>
+                    }
+                    else
+                    {
+                        <li><a class="nav-link-sub" asp-area="" asp-controller="Movies" asp-action="Library" asp-route-filter="@item.Id">@item.Name</a></li>
+                    }
                 }
             </ul>
         </div>
     </div>
     @* cards *@
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row row-cols-lg-4  gy-3">
-        @foreach (var movie in Model)
+        @if (Model is null || Model.Count() == 0)
         {
-            <div class="col">
-                <div class="card myCard">
-                    @if (movie.Poster is null)
-                    {
-                        <img src="~/images/anika-de-klerk-dWYjy9zIiF8-unsplash.jpg" class="img-fluid" alt="...">
-                    }
-                    else
-                    {
-                        <img src="@_imageService.DecodeImage(movie.Poster, movie.PosterType)" class="img-fluid" alt="@movie.Title image" />
-                    }
-                    <div class="card-body myCard-overlay">
-                        <div class="overlay-text">
-                            <span class="card-title clampTitle">@movie.Title</span>
-                            <span class="card-text clampOverview">@movie.Overview</span>
-                            <a asp-action="Details" asp-controller="Movies" asp-route-id="@movie.MovieId" class="btn bnt-block font-weight-bold myCardButton">Read More...</a>
+            <h4 class="mt- ms-5">No Movies in this Collection</h4>
+        }
+        else
+        {
+
+            @foreach (var movie in Model)
+            {
+                <div class="col">
+                    <div class="card myCard">
+                        @if (movie.Movie.Poster is null)
+                        {
+                            <img src="~/images/anika-de-klerk-dWYjy9zIiF8-unsplash.jpg" class="img-fluid" alt="...">
+                        }
+                        else
+                        {
+                            <img src="@_imageService.DecodeImage(movie.Movie.Poster, movie.Movie.PosterType)" class="img-fluid" alt="@movie.Movie.Title image" />
+                        }
+                        <div class="card-body myCard-overlay">
+                            <div class="overlay-text">
+                                <span class="card-title clampTitle">@movie.Movie.Title</span>
+                                <span class="card-text clampOverview">@movie.Movie.Overview</span>
+                                <a asp-action="Details" asp-controller="Movies" asp-route-id="@movie.Movie.MovieId" class="btn bnt-block font-weight-bold myCardButton">Read More...</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
         }
     </div>
-    <div class="row">
-        <div class="col d-flex justify-content-center mt-3">
-            @* <a class="btn myCardButton me-3" asp-area="" asp-controller="Home" asp-action="BrowseMovies" asp-route-genre=@genre asp-route-page=@prevPage>Previous</a> *@
-            @* <a class="btn myCardButton" asp-area="" asp-controller="Home" asp-action="BrowseMovies" asp-route-genre=@genre asp-route-page=@nextPage>Next</a> *@
-        </div>
-    </div>
 }
-@* <partial name="_Pager.cshtml" model="@pager"/> *@
 
 <div class="pager">
     @if (pager.TotalPages > 0)
     {
-        <ul class="pagination justify-content-end">
+        <ul class="pagination justify-content-center">
             @if (pager.CurrentPage > 1)
             {
                 <li class="page-item">
@@ -101,115 +111,3 @@ else
         </ul>
     }
 </div>
-
-
-@*
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.MovieId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TagLine)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Overview)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RunTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReleaseDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VoteAverage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Poster)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PosterType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Backdrop)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BackdropType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TrailerUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MyRating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Comments)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MovieId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TagLine)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Overview)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RunTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReleaseDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rating)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VoteAverage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Poster)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PosterType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Backdrop)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BackdropType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TrailerUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MyRating)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comments)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
- *@

@@ -44,27 +44,63 @@ namespace MoviePro.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Library(int pg = 1)
+        public async Task<IActionResult> Library(int filter, int pg = 1)
         {
+
             // original, no prameters in signature
-            var movies = await _context.Movie.OrderBy(m => m.Title).ThenBy(m => m.ReleaseDate).ToListAsync();
-            ViewData["Collections"] = _context.Collection.ToList();
+            //var movies = await _context.Movie.OrderBy(m => m.Title).ThenBy(m => m.ReleaseDate).ToListAsync();
             //return View(movies);
             // end original
 
-            int pageSize = 4;
-            if (pg < 1)
+            if (String.IsNullOrEmpty(filter.ToString()) || filter == 0)
             {
-                pg = 1;
+                var movies = await _context.MovieCollection
+                    .Include(m => m.Movie)
+                    .OrderBy(m => m.Movie.Title).ThenBy(m => m.Movie.ReleaseDate).ToListAsync();
+
+                int pageSize = 4;
+                if (pg < 1)
+                {
+                    pg = 1;
+                }
+
+                int recsCount = movies.Count();
+                var pager = new Pager(recsCount, pg, pageSize);
+                int recSkip = (pg - 1) * pageSize;
+                var data = movies.Skip(recSkip).Take(pager.PageSize).ToList();
+                this.ViewBag.Pager = pager;
+                ViewData["Collections"] = _context.Collection.ToList();
+                ViewData["Filter"] = "";
+                return View(data);
+            }
+            else
+            {
+                //FILTER
+                //if null show all
+                // include moviecollections where filter == collectionId
+                var movies = await _context.MovieCollection
+                    .Include(m => m.Movie)
+                    .Where(m => m.CollectionId == filter)
+                    .OrderBy(m => m.Movie.Title).ThenBy(m => m.Movie.ReleaseDate).ToListAsync();
+
+                int pageSize = 4;
+                if (pg < 1)
+                {
+                    pg = 1;
+                }
+
+                int recsCount = movies.Count();
+                var pager = new Pager(recsCount, pg, pageSize);
+                int recSkip = (pg - 1) * pageSize;
+                var data = movies.Skip(recSkip).Take(pager.PageSize).ToList();
+                this.ViewBag.Pager = pager;
+                ViewData["Collections"] = _context.Collection.ToList();
+                ViewData["Filter"] = filter;
+
+                return View(data);
             }
 
-            int recsCount = movies.Count();
-            var pager = new Pager(recsCount, pg, pageSize);
-            int recSkip = (pg - 1) * pageSize;
-            var data = movies.Skip(recSkip).Take(pager.PageSize).ToList();
-            this.ViewBag.Pager = pager;
 
-            return View(data);
 
         }
 
@@ -359,7 +395,7 @@ namespace MoviePro.Controllers
 
                 ViewData["cName"] = cName;
             }
-            
+
             ViewData["CollectionId"] = new SelectList(_context.Collection, "Id", "Name");
             ViewData["Local"] = local;
             return View(movie);

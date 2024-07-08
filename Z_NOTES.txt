@@ -13,11 +13,6 @@ add to portfolio
 ***************************
     BUGS
 ****************************
-My Movies FILTER
- ** MoviesController.Library, can't get movies by collection
-
-MoviesController.Details, can't get collection name to display in view
-
 
 ***************************
     FEATURES

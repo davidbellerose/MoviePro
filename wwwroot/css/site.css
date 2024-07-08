@@ -17,24 +17,12 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
   margin-bottom: 60px;
   background-color: var(--background-color);
   color: var(--light-color);
   height: 100%;
 }
 
-/*@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-        position: relative;
-        height: 100%;
-    }
-
-    body{
-        height: 100%;
-    }
-}*/
 h1, h2, h3, h4, h5, h6 {
   color: var(--accent-color);
 }
@@ -207,7 +195,7 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 10;
 }
 
-/*this will be the back to top button*/
+/* back to top button*/
 #btt {
   position: fixed;
   bottom: 80px;
@@ -281,7 +269,6 @@ a, a:active, a:focus, .nav-link, .nav-link, .nav-link:active, .nav-link:focus {
 }
 
 .nav-item:hover {
-  /*border: 1px solid var(--accent-color);*/
   color: var(--background-color);
   background-color: var(--accent-color);
 }
@@ -402,23 +389,6 @@ a, a:active, a:focus, .nav-link, .nav-link, .nav-link:active, .nav-link:focus {
   outline: none !important;
 }
 
-/*use myCardButton style*/
-/*.btn-actions {
-    color: var(--accent-color);
-    background-color: var(--background-color);
-    border-color: var(--accent-color);
-}
-
-.btn-actions:hover {
-    color: var(--background-color);
-    background-color: var(--accent-color);
-    border-color: var(--background-color);
-}*/
-/*.nav-pills, .nav-pills .show {
-    color: var(--accent-color);
-    background-color: var(--background-color);
-    border-color: #1861ac;
-}*/
 a.navbar-brand {
   white-space: normal;
   text-align: center;
@@ -559,6 +529,7 @@ a.navbar-brand {
 }
 .my-rating .rate-label {
   margin-right: 1rem;
+  margin-top: 1rem;
   padding: 0;
 }
 
@@ -598,6 +569,7 @@ a.navbar-brand {
 .rating-static {
   display: flex;
   justify-content: end;
+  margin-top: 1rem;
   direction: rtl;
   unicode-bidi: bidi-override;
   text-align: center;
@@ -755,7 +727,6 @@ a.navbar-brand {
 
 .myCard-image {
   display: block;
-  /*width: 85%;*/
   height: auto;
 }
 
@@ -785,10 +756,6 @@ a.navbar-brand {
   font-size: 1rem;
   position: absolute;
   top: 10%;
-  /*left: 50%;*/
-  /*-webkit-transform: translate(-50%, -50%);*/
-  /*-ms-transform: translate(-50%, -50%);*/
-  /*transform: translate(-50%, -50%);*/
   text-align: center;
   padding: 0.5rem;
   margin: 0;
@@ -819,7 +786,6 @@ a.navbar-brand {
 .myCardButton:hover {
   background-color: var(--accent-color);
   color: #212121;
-  /*opacity: 0.8;*/
 }
 
 .clampOverview {
@@ -963,6 +929,15 @@ a.navbar-brand {
   display: inline;
   white-space: nowrap;
   padding: 0 0.7rem;
+}
+.library-filter ul li a {
+  text-decoration: none;
+}
+.library-filter ul .active {
+  background-color: var(--accent-color);
+}
+.library-filter ul .active a {
+  color: var(--background-color);
 }
 
 .pager {
