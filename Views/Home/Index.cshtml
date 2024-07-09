@@ -31,7 +31,6 @@
                     var classText = "active";
                     @for (var slide = 0; slide <= 3; slide++)
                     {
-
                         <div class="carousel-item @classText">
                             <div class="row">
                                 @foreach (var movie in Model.Upcoming.results.Skip(slide * 4).Take(4))
