@@ -69,7 +69,7 @@ namespace MoviePro.Controllers
                 int recSkip = (pg - 1) * pageSize;
                 var data = movies.Skip(recSkip).Take(pager.PageSize).ToList();
                 this.ViewBag.Pager = pager;
-                ViewData["Collections"] = _context.Collection.ToList();
+                ViewData["Collections"] = _context.Collection.OrderBy(x => x.Name).ToList();
                 ViewData["Filter"] = "";
                 return View(data);
             }
@@ -94,14 +94,11 @@ namespace MoviePro.Controllers
                 int recSkip = (pg - 1) * pageSize;
                 var data = movies.Skip(recSkip).Take(pager.PageSize).ToList();
                 this.ViewBag.Pager = pager;
-                ViewData["Collections"] = _context.Collection.ToList();
+                ViewData["Collections"] = _context.Collection.OrderBy(x => x.Name).ToList();
                 ViewData["Filter"] = filter;
 
                 return View(data);
             }
-
-
-
         }
 
         //GET: The mapped(copy) API version

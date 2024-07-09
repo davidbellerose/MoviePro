@@ -10,7 +10,6 @@
     --bs-nav-pills-link-active-bg: #ff983e !important;
 }
 
-
 html {
     font-size: var(--font-size);
     position: relative;
@@ -27,6 +26,19 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     color: var(--accent-color);
+}
+
+.brand {
+    position: absolute;
+    top: 0.5rem;
+    left: 1rem;
+    font-weight: 900;
+    font-size: 1.5rem;
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+    background-color: rgba(33, 33, 33, 0.5);
+    padding: 4px 6px;
+    padding-top: 0;
 }
 
 .area-form{
@@ -47,6 +59,7 @@ h1, h2, h3, h4, h5, h6 {
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+    margin-bottom: 2rem;
 }
 
 /*****************************************************************************************
@@ -90,51 +103,34 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: start;
 }
 
-.footer-item a {
-    color: var(--accent-color);
+.footer-item a, .footer-item a:visited, .footer-item a:active, .footer-item a:focus {
     text-decoration: none;
 }
 
 .footer-item a i {
     color: var(--accent-color);
     font-size: 1.8rem;
+    opacity: 0.8;
 }
 
 .footer-item span {
     color: var(--accent-color);
 }
 
-.footer-item a:hover {
-    color: var(--background-color);
-}
-
-.footer-item a:visited {
-    color: var(--background-color);
-}
-
-.footer-item a:active {
-    color: var(--background-color);
-}
-
-.footer-item a:focus {
-    color: var(--background-color);
-}
-
-.footer-item a:hover {
-    color: var(--background-color);
-
-    i {
-        color: var(--background-color);
-    }
-}
-
-.footer-item a img {
-    width: 30px;
-    height: auto;
+.footer-item a i:hover {
+    opacity: 1;
 }
 
 .footer-item:nth-child(1) {
     flex-wrap: wrap;
+
+    a {
+        opacity: 0.7;
+    }
+}
+
+.footer-item:nth-child(1) a:hover {
+    opacity: 1;
 }
 
 .footer-item:nth-child(2) {
@@ -149,13 +145,6 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0 1rem;
     color: #d083cf;
 }
-
-.footer-item:nth-child(3) a:hover {
-    opacity: 0.7;
-    color: var(--background-color);
-}
-
-
 
 @media ( max-width: 755px ) {
     .footer-container {
@@ -222,7 +211,7 @@ h1, h2, h3, h4, h5, h6 {
     border-top: 1px solid var(--accent-color);
     border-bottom: 1px solid var(--accent-color);
     cursor: pointer;
-    transition: all 0.3s ease-out;
+    //transition: all 0.3s ease-out;
 
     i {
         font-weight: 900;
@@ -234,7 +223,7 @@ h1, h2, h3, h4, h5, h6 {
     position: absolute;
     right: 10px;
     opacity: 0;
-    transition: all 0.3s ease-out;
+    //transition: all 0.3s ease-out;
 }
 #btt:hover {
     color: var(--dark-color);
@@ -273,6 +262,7 @@ button.accept-policy {
 .nav-pills .active, .nav-pills .nav-link .active, .nav-pills .show > .nav-link {
     color: var(--bs-nav-pills-link-active-color) !important;
     background-color: var(--bs-nav-pills-link-active-bg) !important;
+    border-radius: 0px;
 }
 
 
@@ -563,7 +553,6 @@ a.navbar-brand {
 
     .rate-label {
         margin-right: 1rem;
-        margin-top: 1rem;
         padding: 0;
     }
 }
@@ -574,10 +563,12 @@ a.navbar-brand {
     direction: rtl;
     unicode-bidi: bidi-override;
     text-align: center;
+    margin: 1rem 0;
 }
 
 .rating .star {
     display: none;
+    margin: 1rem 0;
 }
 
 .rating label {
@@ -604,7 +595,6 @@ a.navbar-brand {
 .rating-static {
     display: flex;
     justify-content: end;
-    margin-top: 1rem;
     direction: rtl;
     unicode-bidi: bidi-override;
     text-align: center;
@@ -739,6 +729,7 @@ a.navbar-brand {
     .carousel-banner a:hover {
         color: var(--background-color);
         border-radius: 0px;
+        background-color: var(--accent-color);
     }
 
     .carousel-banner a.active {
@@ -754,7 +745,9 @@ a.navbar-brand {
         -o-transition: -o-transform 1s ease-in-out;
         transition: transform 1s ease-in-out;
     }
-    /*****************************************************************************************
+
+
+/*****************************************************************************************
 	
 	CARDS                                                                  CARDS
 
@@ -987,7 +980,7 @@ a.navbar-brand {
             }
         }
 
-        .active {
+        .active, li:hover {
             background-color: var(--accent-color);
 
             a {
@@ -1012,4 +1005,23 @@ a.navbar-brand {
     --bs-pagination-active-color: var(--background-color);
     --bs-pagination-active-bg: var(--accent-color);
     --bs-pagination-active-border-color: var(--accent-color);
+}
+
+#pager-large{
+    display: block;
+}
+
+#pager-small{
+    display: none;
+}
+
+@media (max-width:500px){
+
+    #pager-large {
+        display: none;
+    }
+
+    #pager-small {
+        display: block;
+    }
 }

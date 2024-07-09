@@ -18,94 +18,126 @@
     }
 }
 
-
+@*
 @if (Model is null)
 {
     <h2>No Movies in Collections.</h2>
 }
 else
-{
-    @* filter *@
-    @* check pagination anchor at bottom. can apply active class to currently selected filter*@
-    <div class="row library-filter">
-        <div class="col">
-            <ul>
-                <span>Filter:</span>
-                @foreach (var item in (List<Collection>)ViewData["Collections"])
+{ *@
+<div class="row library-filter">
+    <div class="col-auto mt-2"><h5>Filter:</h5></div>
+    <div class="col">
+        <ul>
+
+            @foreach (var item in (List<Collection>)ViewData["Collections"])
+            {
+                if (item.Id.ToString() == activeFilter)
                 {
-                    if (item.Id.ToString() == activeFilter)
+                    <li class="active"><a class="nav-link-sub" asp-area="" asp-controller="Movies" asp-action="Library" asp-route-filter="@item.Id">@item.Name</a></li>
+                }
+                else
+                {
+                    <li><a class="nav-link-sub" asp-area="" asp-controller="Movies" asp-action="Library" asp-route-filter="@item.Id">@item.Name</a></li>
+                }
+            }
+        </ul>
+    </div>
+</div>
+@* cards *@
+@if (Model is null || Model.Count() == 0)
+{
+    <h4 class="mt-5 mb-5 ms-5">No Movies in this Collection</h4>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4  gy-3">
+
+
+        @foreach (var movie in Model)
+        {
+            <div class="col">
+                <div class="card myCard">
+                    @if (movie.Movie.Poster is null)
                     {
-                        <li class="active"><a class="nav-link-sub" asp-area="" asp-controller="Movies" asp-action="Library" asp-route-filter="@item.Id">@item.Name</a></li>
+                        <img src="~/images/anika-de-klerk-dWYjy9zIiF8-unsplash.jpg" class="img-fluid" alt="...">
                     }
                     else
                     {
-                        <li><a class="nav-link-sub" asp-area="" asp-controller="Movies" asp-action="Library" asp-route-filter="@item.Id">@item.Name</a></li>
+                        <img src="@_imageService.DecodeImage(movie.Movie.Poster, movie.Movie.PosterType)" class="img-fluid" alt="@movie.Movie.Title image" />
                     }
-                }
-            </ul>
-        </div>
-    </div>
-    @* cards *@
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row row-cols-lg-4  gy-3">
-        @if (Model is null || Model.Count() == 0)
-        {
-            <h4 class="mt- ms-5">No Movies in this Collection</h4>
-        }
-        else
-        {
-
-            @foreach (var movie in Model)
-            {
-                <div class="col">
-                    <div class="card myCard">
-                        @if (movie.Movie.Poster is null)
-                        {
-                            <img src="~/images/anika-de-klerk-dWYjy9zIiF8-unsplash.jpg" class="img-fluid" alt="...">
-                        }
-                        else
-                        {
-                            <img src="@_imageService.DecodeImage(movie.Movie.Poster, movie.Movie.PosterType)" class="img-fluid" alt="@movie.Movie.Title image" />
-                        }
-                        <div class="card-body myCard-overlay">
-                            <div class="overlay-text">
-                                <span class="card-title clampTitle">@movie.Movie.Title</span>
-                                <span class="card-text clampOverview">@movie.Movie.Overview</span>
-                                <a asp-action="Details" asp-controller="Movies" asp-route-id="@movie.Movie.MovieId" class="btn bnt-block font-weight-bold myCardButton">Read More...</a>
-                            </div>
+                    <div class="card-body myCard-overlay">
+                        <div class="overlay-text">
+                            <span class="card-title clampTitle">@movie.Movie.Title</span>
+                            <span class="card-text clampOverview">@movie.Movie.Overview</span>
+                            <a asp-action="Details" asp-controller="Movies" asp-route-id="@movie.Movie.MovieId" class="btn bnt-block font-weight-bold myCardButton">Read More...</a>
                         </div>
                     </div>
                 </div>
-            }
+            </div>
         }
     </div>
 }
+@* } *@
 
-<div class="pager">
+<div id="pager-large" class="pager">
     @if (pager.TotalPages > 0)
     {
         <ul class="pagination justify-content-center">
             @if (pager.CurrentPage > 1)
             {
                 <li class="page-item">
-                    <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-pg="1">First</a>
+                    <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-filter="@activeFilter" asp-route-pg="1">First</a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-pg="@(pager.CurrentPage - 1)">Previous</a>
+                    <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-filter="@activeFilter" asp-route-pg="@(pager.CurrentPage - 1)">Previous</a>
                 </li>
             }
             @for (var pge = pager.StartPage; pge < pager.EndPage + 1; pge++)
             {
                 <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
-                    <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-pg="@pge">@pge</a>
+                    <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-filter="@activeFilter" asp-route-pg="@pge">@pge</a>
                 </li>
             }
             @if (pager.CurrentPage < pager.TotalPages)
             {
                 <li class="page-item">
-                    <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-pg="@(pager.CurrentPage + 1)">Next</a>
+                    <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-filter="@activeFilter" asp-route-pg="@(pager.CurrentPage + 1)">Next</a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-pg="@(pager.TotalPages)">Last</a>
+                    <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-filter="@activeFilter" asp-route-pg="@(pager.TotalPages)">Last</a>
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+<div id="pager-small" class="pager">
+    @if (pager.TotalPages > 0)
+    {
+        <ul class="pagination justify-content-center">
+            @if (pager.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-filter="@activeFilter" asp-route-pg="1"><i class="bi bi-chevron-bar-left"></i></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-filter="@activeFilter" asp-route-pg="@(pager.CurrentPage - 1)"><i class="bi bi-chevron-compact-left"></i></a>
+                </li>
+            }
+            @* @for (var pge = pager.StartPage; pge < pager.EndPage + 1; pge++)
+        { *@
+            <li class="page-item active">
+                <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-filter="@activeFilter" asp-route-pg="@pager.CurrentPage">@pager.CurrentPage</a>
+            </li>
+            @* } *@
+            @if (pager.CurrentPage < pager.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-filter="@activeFilter" asp-route-pg="@(pager.CurrentPage + 1)"><i class="bi bi-chevron-compact-right"></i></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" asp-asp-controller="Movies" asp-action="Library" asp-route-filter="@activeFilter" asp-route-pg="@(pager.TotalPages)"><i class="bi bi-chevron-bar-right"></i></a>
                 </li>
             }
         </ul>

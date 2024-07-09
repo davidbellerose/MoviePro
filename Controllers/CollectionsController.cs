@@ -30,7 +30,11 @@ namespace MoviePro.Controllers
         {
             var defaultCollectionName = _appSettings.MovieProSettings.DefaultCollection.Name;
 
-            var collections = await _context.Collection.Where(c => c.Name != defaultCollectionName).ToListAsync();
+            //var collections = await _context.Collection.Where(c => c.Name != defaultCollectionName).ToListAsync();
+
+            var collections = await _context.Collection
+                .OrderBy(x => x.Name)
+                .ToListAsync();
 
             return View(collections);
         }

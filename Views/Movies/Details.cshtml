@@ -54,10 +54,11 @@
         </div>
             <div class="row import-form">
                 <div class="col h5">
-                    <span class="mb-2">Current Collection: &nbsp;@cName</span>
+                    @* <span class="mb-2">Current Collection: &nbsp;@cName</span> *@
                     @if (local == "True")
                     {
-                        <div id="myInfo" class="myInfo">
+                    <div id="myInfo" class="myInfo">
+                        <h5 class="mb-4">Current Collection: &nbsp;@cName</h5>
                             <div class="my-rating">
                                 <div class="rate-label">My Rating:</div>
                                 <div class="rating-static">
@@ -108,7 +109,7 @@
                         <div id="updateMovie" class="updateMovie">
                             <h5>Update Info</h5>
                             <form asp-controller="Movies" asp-action="UpdateMovie" asp-route-id="@Model.Id" method="post">
-                            <span class="mb-2">Current Collection: &nbsp;@cName</span>
+                            <h5 class="mb-2">Current Collection: &nbsp;@cName</h5>
                                 <select name="collectionId" class="form-control" asp-items="@ViewBag.collectionId"></select>
                                 <div class="my-rating">
                                     <div class="rate-label">My Rating:</div>
@@ -138,7 +139,7 @@
                     {
                         <h4>Import movie to collection</h4>
                         <form asp-controller="Movies" asp-action="Import" asp-route-id="@Model.MovieId" method="post">
-                        <span class="mb-2">Current Collection: &nbsp;@cName</span>
+                        <h5>Collection:</h5>
                             <select name="collectionId" class="form-control" asp-items="@ViewBag.collectionId"></select>
                             <div class="my-rating">
                                 <div class="rate-label">My Rating:</div>
@@ -156,7 +157,7 @@
                                 </div>
                             </div>
                             <div>
-                                <h5>Comments</h5>
+                                <h5>Comments:</h5>
                                 <textarea asp-for="@Model.Comments" rows="3"></textarea>
                             </div>
                             <button type="submit" class="btn myCardButton">Import</button>
