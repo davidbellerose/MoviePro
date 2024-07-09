@@ -375,22 +375,11 @@ namespace MoviePro.Controllers
                 return NotFound();
             }
 
-
             if (local)
             {
-                // need to get collection id from moviecollections for movieid
-                var collectionId = _context.MovieCollection.Where(m => m.Movie.Id == movie.Id).Select(m => m.CollectionId).ToList();
-
-                // there is only one in the list so take the first index
-                var cId = collectionId[0];
-
-                // now I need the name of the collection
-                var collectionName = _context.Collection.Where(m => m.Id == cId).Select(m => m.Name).ToList();
-
-                // only one in the list so take the first index
-                var cName = collectionName[0];
-
-                ViewData["cName"] = cName;
+                // J's version works ******************************
+                var collId = movie.MovieCollections.FirstOrDefault();
+                ViewData["cName"] = collId.Collection.Name;
             }
 
             ViewData["CollectionId"] = new SelectList(_context.Collection, "Id", "Name");
