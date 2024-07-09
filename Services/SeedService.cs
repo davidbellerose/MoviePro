@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using MoviePro.Data;
 using MoviePro.Models.Database;
 using MoviePro.Models.Settings;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -39,23 +40,29 @@ namespace MoviePro.Services
         {
             if (_dbContext.Roles.Any()) return;
 
-            var adminRole = _appSettings.MovieProSettings.DefaultCredentials.Role;
+
+            var adminRole = _appSettings.MovieProSettings.DefaultCredentials.Role ?? Environment.GetEnvironmentVariable("Role");
+
+            //var adminRole = _appSettings.MovieProSettings.DefaultCredentials.Role;
             await _roleManager.CreateAsync(new IdentityRole(adminRole));
         }
 
         private async Task SeedUsersAsync()
         {
             if (_userManager.Users.Any()) return;
+            var email = _appSettings.MovieProSettings.DefaultCredentials.Email ?? Environment.GetEnvironmentVariable("Email");
+            var userName = _appSettings.MovieProSettings.DefaultCredentials.Email ?? Environment.GetEnvironmentVariable("Email");
+            var password = _appSettings.MovieProSettings.DefaultCredentials.Password ?? Environment.GetEnvironmentVariable("Password");
 
-            var credentials = _appSettings.MovieProSettings.DefaultCredentials;
+            //var credentials = _appSettings.MovieProSettings.DefaultCredentials;
             var newUser = new IdentityUser()
             {
-                Email = credentials.Email,
-                UserName = credentials.Email,
+                Email = email,
+                UserName = email,
                 EmailConfirmed = true
             };
 
-            await _userManager.CreateAsync(newUser, credentials.Password);
+            await _userManager.CreateAsync(newUser, password);
             //await _userManager.AddToRoleAsync(newUser, credentials.Role);
 
         }
@@ -64,10 +71,13 @@ namespace MoviePro.Services
         {
             if (_dbContext.Collection.Any()) return;
 
+            var name = _appSettings.MovieProSettings.DefaultCollection.Name ?? Environment.GetEnvironmentVariable("Name");
+            var description = _appSettings.MovieProSettings.DefaultCollection.Description ?? Environment.GetEnvironmentVariable("Description");
+
             _dbContext.Add(new Collection()
             {
-                Name = _appSettings.MovieProSettings.DefaultCollection.Name,
-                Description = _appSettings.MovieProSettings.DefaultCollection.Description
+                Name = name,
+                Description = description
             });
 
             await _dbContext.SaveChangesAsync();
