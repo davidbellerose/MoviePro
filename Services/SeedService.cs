@@ -31,8 +31,8 @@ namespace MoviePro.Services
         {
             await _dbContext.Database.MigrateAsync();
             //await SeedRolesAsync();
-            await SeedUsersAsync();
-            await SeedCollections();
+            //await SeedUsersAsync();
+            //await SeedCollections();
         }
 
         private async Task SeedRolesAsync()
