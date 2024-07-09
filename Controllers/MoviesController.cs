@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace MoviePro.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize]
     public class MoviesController : Controller
     {
         private readonly AppSettings _appSettings;

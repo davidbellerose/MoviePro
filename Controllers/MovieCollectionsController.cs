@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 
 namespace MoviePro.Controllers
 {
-
-    [Authorize(Roles = "Administrator")]
+    [Authorize]
     public class MovieCollectionsController : Controller
     {
         private readonly ApplicationDbContext _context;

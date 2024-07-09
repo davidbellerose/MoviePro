@@ -30,7 +30,7 @@ namespace MoviePro.Services
         public async Task ManageDataAsync()
         {
             await _dbContext.Database.MigrateAsync();
-            await SeedRolesAsync();
+            //await SeedRolesAsync();
             await SeedUsersAsync();
             await SeedCollections();
         }
@@ -56,7 +56,7 @@ namespace MoviePro.Services
             };
 
             await _userManager.CreateAsync(newUser, credentials.Password);
-            await _userManager.AddToRoleAsync(newUser, credentials.Role);
+            //await _userManager.AddToRoleAsync(newUser, credentials.Role);
 
         }
 

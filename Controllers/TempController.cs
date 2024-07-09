@@ -11,7 +11,7 @@ using MoviePro.Models.Database;
 
 namespace MoviePro.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize]
     public class TempController : Controller
     {
         private readonly ApplicationDbContext _context;

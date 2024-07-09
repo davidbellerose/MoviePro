@@ -13,7 +13,7 @@ using MoviePro.Models.Settings;
 
 namespace MoviePro.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize]
     public class CollectionsController : Controller
     {
         private readonly ApplicationDbContext _context;

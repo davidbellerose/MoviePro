@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace MoviePro.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    //[Authorize(Roles = "Administrator")]
+    [Authorize]
     public class ActorsController : Controller
     {
         private readonly IRemoteMovieService _tmdbMovieService;

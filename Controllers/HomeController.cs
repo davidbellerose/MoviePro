@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace MoviePro.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

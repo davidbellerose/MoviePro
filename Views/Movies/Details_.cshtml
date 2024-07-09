@@ -14,7 +14,6 @@
             <div class="col-md-4 col-sm-12 col-xs-12">
                 <div class="movie-img sticky-sb">
                     <img src="@_imageService.DecodeImage(Model.Poster, Model.PosterType)" alt="">
-
                     @if (Model.TrailerUrl != "")
                     {
                         <div class="movie-btn">
@@ -24,47 +23,39 @@
                             </div>
                         </div>
                     }
-
-                    @if (User.IsInRole("Administrator"))
+                    @if (!(bool)ViewBag.Local)
                     {
-                        if (!(bool)ViewBag.Local)
-                        {
-
-                            <div class="movie-btn">
-                                <div class="btn-transform transform-vertical red">
-                                    <div>
-                                        <a class="item item-1 yellowbtn"> <i class="ion-plus"></i> Import Movie</a>
-                                    </div>
-                                    <div>
-                                        <form id="frmSearch" asp-action="Import" asp-controller="Movies" method="post">
-                                            <input type="hidden" name="Id" value="@Model.MovieId" />
-                                            <a onclick="document.getElementById('frmSearch').submit()" class="item item-2 yellowbtn hvr-grow">
-                                                <i class="ion-plus"></i>
-                                            </a>
-                                        </form>
-                                    </div>
-                                </div>
+                    <div class="movie-btn">
+                        <div class="btn-transform transform-vertical red">
+                            <div>
+                                <a class="item item-1 yellowbtn"> <i class="ion-plus"></i> Import Movie</a>
                             </div>
-                        }
-                        else
-                        {
-                            <div class="movie-btn">
-                                <div class="btn-transform transform-vertical red">
-                                    <div>
-                                        <a class="item item-1 yellowbtn"> <i class="ion-plus"></i> Edit Movie</a>
-                                        <a asp-controller="Movies" asp-action="Edit" asp-route-id="@Model.Id" class="item item-2 yellowbtn hvr-grow"><i class="ion-plus"></i></a>
-                                    </div>
-                                </div>
+                            <div>
+                                <form id="frmSearch" asp-action="Import" asp-controller="Movies" method="post">
+                                    <input type="hidden" name="Id" value="@Model.MovieId" />
+                                    <a onclick="document.getElementById('frmSearch').submit()" class="item item-2 yellowbtn hvr-grow">
+                                        <i class="ion-plus"></i>
+                                    </a>
+                                </form>
                             </div>
-                        }
+                        </div>
+                    </div>
                     }
-
+                    else
+                    {
+                    <div class="movie-btn">
+                        <div class="btn-transform transform-vertical red">
+                            <div>
+                                <a class="item item-1 yellowbtn"> <i class="ion-plus"></i> Edit Movie</a>
+                                <a asp-controller="Movies" asp-action="Edit" asp-route-id="@Model.Id" class="item item-2 yellowbtn hvr-grow"><i class="ion-plus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    }
                 </div>
             </div>
             <div class="col-md-8 col-sm-12 col-xs-12">
-
                 <div class="movie-single-ct main-content">
-
                     <div class="movie-rate">
                         <div class="rate">
                             <i class="ion-android-star"></i>
@@ -76,17 +67,14 @@
                             </p>
                         </div>
                     </div>
-
                     <div class="movie-tabs">
                         <div class="tabs">
                             <ul class="tab-links tabs-mv">
                                 <li class="active"><a href="#overview">Overview</a></li>
                                 <li><a href="#cast">Cast</a></li>
                                 <li><a href="#crew">Crew</a></li>
-
                             </ul>
                             <div class="tab-content">
-
                                 <div id="overview" class="tab active">
                                     <div class="row">
                                         <div class="col-md-8 col-sm-12 col-xs-12">
@@ -97,7 +85,6 @@
                                             <div class="title-hd-sm">
                                                 <h4>Starring</h4>
                                             </div>
-
                                             <!-- movie cast -->
                                             <div class="mvcast-item">
                                                 @foreach (var castMember in Model.Cast.Take(5))
@@ -112,19 +99,15 @@
                                                 }
                                             </div>
                                         </div>
-
                                         <div class="col-md-4 col-xs-12 col-sm-12">
                                             <div class="sb-it">
                                                 <h6>Movie Id:</h6>
                                                 <p>@Model.MovieId</p>
                                             </div>
-
-
                                             <div class="sb-it">
                                                 <h6>Director: </h6>
                                                 <p>@Model.Crew.FirstOrDefault(c => c.Job == "Director")?.Name</p>
                                             </div>
-
                                             <div class="sb-it">
                                                 <h6>Writers: </h6>
                                                 <p>
@@ -136,7 +119,6 @@
                                                     }
                                                 </p>
                                             </div>
-
                                             <div class="sb-it">
                                                 <h6>Stars: </h6>
                                                 <p>
@@ -148,17 +130,14 @@
                                                     }
                                                 </p>
                                             </div>
-
                                             <div class="sb-it">
                                                 <h6>Release Date:</h6>
                                                 <p>@Model.ReleaseDate.ToString("MMM dd, yyyy")</p>
                                             </div>
-
                                             <div class="sb-it">
                                                 <h6>Run Time:</h6>
                                                 <p>@Model.RunTime min</p>
                                             </div>
-
                                             <div class="sb-it">
                                                 <h6>MMPA Rating:</h6>
                                                 <p>@Model.Rating</p>
@@ -166,11 +145,8 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div id="cast" class="tab">
                                     <div class="row">
-
-                                        <!-- //== -->
                                         <div class="title-hd-sm">
                                             <h4>Cast</h4>
                                         </div>
@@ -188,11 +164,8 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div id="crew" class="tab">
                                     <div class="row">
-
-                                        <!-- //== -->
                                         <div class="title-hd-sm">
                                             <h4>Crew</h4>
                                         </div>
@@ -226,9 +199,5 @@
         let commonHero = document.getElementById('common-hero');
         commonHero.style.backgroundImage = ('url(' + imageString + ')');
         commonHero.style.height = "400px";
-
     </script>
-
 }
-view raw
-gistfile1.txt hosted with ❤ by GitHub 
