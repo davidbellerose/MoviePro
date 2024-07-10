@@ -110,7 +110,7 @@ namespace MoviePro.Services
             var baseUrl = Environment.GetEnvironmentVariable("BaseUrl") ?? _appSettings.TMDBSettings.BaseUrl;
             var apiKey = Environment.GetEnvironmentVariable("TmDbApiKey") ?? _appSettings.MovieProSettings.TmDbApiKey;
             var language = Environment.GetEnvironmentVariable("Language") ?? _appSettings.TMDBSettings.QueryOptions.Language;
-            var page = Environment.GetEnvironmentVariable("page") ?? _appSettings.TMDBSettings.QueryOptions.Page;
+            var page = Environment.GetEnvironmentVariable("Page") ?? _appSettings.TMDBSettings.QueryOptions.Page;
             var baseImagePath = Environment.GetEnvironmentVariable("BaseImagePath") ?? _appSettings.TMDBSettings.BaseImagePath;
             var defaultPosterSize = Environment.GetEnvironmentVariable("DefaultPosterSize") ?? _appSettings.MovieProSettings.DefaultPosterSize;
 
