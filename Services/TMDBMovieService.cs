@@ -35,9 +35,9 @@ namespace MoviePro.Services
 
 
             // Environment Variable Settings
-            var baseUrl = _appSettings.TMDBSettings.BaseUrl ?? Environment.GetEnvironmentVariable("BaseUrl");
-            var apiKey = _appSettings.MovieProSettings.TmDbApiKey ?? Environment.GetEnvironmentVariable("TmDbApiKey");
-            var language = _appSettings.TMDBSettings.QueryOptions.Language ?? Environment.GetEnvironmentVariable("Language");
+            var baseUrl = Environment.GetEnvironmentVariable("BaseUrl") ??  _appSettings.TMDBSettings.BaseUrl;
+            var apiKey = Environment.GetEnvironmentVariable("TmDbApiKey") ?? _appSettings.MovieProSettings.TmDbApiKey;
+            var language = Environment.GetEnvironmentVariable("Language") ?? _appSettings.TMDBSettings.QueryOptions.Language;
 
             //Step 1: Assemble the full request uri string
             var query = $"{baseUrl}/person/{id}";
@@ -71,10 +71,10 @@ namespace MoviePro.Services
             MovieDetail movieDetail = new();
 
             // Environment Variable Settings
-            var baseUrl = _appSettings.TMDBSettings.BaseUrl ?? Environment.GetEnvironmentVariable("BaseUrl");
-            var apiKey = _appSettings.MovieProSettings.TmDbApiKey ?? Environment.GetEnvironmentVariable("TmDbApiKey");
-            var language = _appSettings.TMDBSettings.QueryOptions.Language ?? Environment.GetEnvironmentVariable("Language");
-            var appendToResponse = _appSettings.TMDBSettings.QueryOptions.AppendToResponse ?? Environment.GetEnvironmentVariable("AppendToResponse");
+            var baseUrl = Environment.GetEnvironmentVariable("BaseUrl") ?? _appSettings.TMDBSettings.BaseUrl;
+            var apiKey = Environment.GetEnvironmentVariable("TmDbApiKey") ??  _appSettings.MovieProSettings.TmDbApiKey;
+            var language = Environment.GetEnvironmentVariable("Language") ?? _appSettings.TMDBSettings.QueryOptions.Language;
+            var appendToResponse = Environment.GetEnvironmentVariable("AppendToResponse") ?? _appSettings.TMDBSettings.QueryOptions.AppendToResponse;
 
             //Step 1:
             var query = $"{baseUrl}/movie/{id}";
@@ -158,11 +158,11 @@ namespace MoviePro.Services
             MovieSearch movieSearch = new();
 
             // Environment Variable Settings
-            var baseUrl = _appSettings.TMDBSettings.BaseUrl ?? Environment.GetEnvironmentVariable("BaseUrl");
-            var apiKey = _appSettings.MovieProSettings.TmDbApiKey ?? Environment.GetEnvironmentVariable("TmDbApiKey");
-            var language = _appSettings.TMDBSettings.QueryOptions.Language ?? Environment.GetEnvironmentVariable("Language");
-            var baseImagePath = _appSettings.TMDBSettings.BaseImagePath ?? Environment.GetEnvironmentVariable("BaseImagePath");
-            var defaultPosterSize = _appSettings.MovieProSettings.DefaultPosterSize ?? Environment.GetEnvironmentVariable("DefaultPosterSize");
+            var baseUrl = Environment.GetEnvironmentVariable("BaseUrl") ?? _appSettings.TMDBSettings.BaseUrl;
+            var apiKey = Environment.GetEnvironmentVariable("TmDbApiKey") ?? _appSettings.MovieProSettings.TmDbApiKey;
+            var language = Environment.GetEnvironmentVariable("Language") ?? _appSettings.TMDBSettings.QueryOptions.Language;
+            var baseImagePath = Environment.GetEnvironmentVariable("BaseImagePath") ?? _appSettings.TMDBSettings.BaseImagePath;
+            var defaultPosterSize = Environment.GetEnvironmentVariable("DefaultPosterSize") ?? _appSettings.MovieProSettings.DefaultPosterSize;
 
             //Step 1: Assemble the full request uri string
             var query = $"{baseUrl}/search/movie?query={searchTerm}";
@@ -200,11 +200,11 @@ namespace MoviePro.Services
             MovieSearch movieSearch = new();
 
             // Environment Variable Settings
-            var baseUrl = _appSettings.TMDBSettings.BaseUrl ?? Environment.GetEnvironmentVariable("BaseUrl");
-            var apiKey = _appSettings.MovieProSettings.TmDbApiKey ?? Environment.GetEnvironmentVariable("TmDbApiKey");
-            var language = _appSettings.TMDBSettings.QueryOptions.Language ?? Environment.GetEnvironmentVariable("Language");
-            var baseImagePath = _appSettings.TMDBSettings.BaseImagePath ?? Environment.GetEnvironmentVariable("BaseImagePath");
-            var defaultPosterSize = _appSettings.MovieProSettings.DefaultPosterSize ?? Environment.GetEnvironmentVariable("DefaultPosterSize");
+            var baseUrl = Environment.GetEnvironmentVariable("BaseUrl") ?? _appSettings.TMDBSettings.BaseUrl;
+            var apiKey = Environment.GetEnvironmentVariable("TmDbApiKey") ?? _appSettings.MovieProSettings.TmDbApiKey;
+            var language = Environment.GetEnvironmentVariable("Language") ?? _appSettings.TMDBSettings.QueryOptions.Language;
+            var baseImagePath = Environment.GetEnvironmentVariable("BaseImagePath") ?? _appSettings.TMDBSettings.BaseImagePath;
+            var defaultPosterSize = Environment.GetEnvironmentVariable("DefaultPosterSize") ?? _appSettings.MovieProSettings.DefaultPosterSize;
 
             //Step 1: Assemble the full request uri string
             var query = $"{baseUrl}/discover/movie";

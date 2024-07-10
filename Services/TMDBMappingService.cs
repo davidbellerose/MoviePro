@@ -119,8 +119,8 @@ namespace MoviePro.Services
         }
         public string BuildCastImage(string profilePath)
         {
-            var baseImagePath = _appSettings.TMDBSettings.BaseImagePath ?? Environment.GetEnvironmentVariable("BaseImagePath");
-            var defaultPosterSize = _appSettings.MovieProSettings.DefaultPosterSize ?? Environment.GetEnvironmentVariable("DefaultPosterSize");
+            var baseImagePath = Environment.GetEnvironmentVariable("BaseImagePath") ?? _appSettings.TMDBSettings.BaseImagePath;
+            var defaultPosterSize = Environment.GetEnvironmentVariable("DefaultPosterSize") ?? _appSettings.MovieProSettings.DefaultPosterSize;
 
             if (string.IsNullOrEmpty(profilePath))
                 return _appSettings.MovieProSettings.DefaultCastImage;
@@ -130,16 +130,16 @@ namespace MoviePro.Services
 
         private async Task<byte[]> EncodeBackdropImageAsync(string path)
         {
-            var baseImagePath = _appSettings.TMDBSettings.BaseImagePath ?? Environment.GetEnvironmentVariable("BaseImagePath");
-            var defaultBackdropSize = _appSettings.MovieProSettings.DefaultBackdropSize ?? Environment.GetEnvironmentVariable("DefaultBackdropSize");
+            var baseImagePath = Environment.GetEnvironmentVariable("BaseImagePath") ?? _appSettings.TMDBSettings.BaseImagePath;
+            var defaultBackdropSize = Environment.GetEnvironmentVariable("DefaultBackdropSize") ?? _appSettings.MovieProSettings.DefaultBackdropSize;
 
             var backdropPath = $"{baseImagePath}/{defaultBackdropSize}/{path}";
             return await _imageService.EncodeImageURLAsync(backdropPath);
         }
         private async Task<byte[]> EncodePosterImageAsync(string path)
         {
-            var baseImagePath = _appSettings.TMDBSettings.BaseImagePath ?? Environment.GetEnvironmentVariable("BaseImagePath");
-            var defaultPosterSize = _appSettings.MovieProSettings.DefaultPosterSize ?? Environment.GetEnvironmentVariable("DefaultPosterSize");
+            var baseImagePath = Environment.GetEnvironmentVariable("BaseImagePath") ?? _appSettings.TMDBSettings.BaseImagePath;
+            var defaultPosterSize = Environment.GetEnvironmentVariable("DefaultPosterSize") ?? _appSettings.MovieProSettings.DefaultPosterSize;
 
             var posterPath = $"{baseImagePath}/{defaultPosterSize}/{path}";
             return await _imageService.EncodeImageURLAsync(posterPath);
@@ -173,7 +173,7 @@ namespace MoviePro.Services
         }
         private string BuildTrailerPath(Videos videos)
         {
-            var baseYouTubePath = _appSettings.TMDBSettings.BaseYouTubePath ?? Environment.GetEnvironmentVariable("BaseYouTubePath");
+            var baseYouTubePath = Environment.GetEnvironmentVariable("BaseYouTubePath") ?? _appSettings.TMDBSettings.BaseYouTubePath;
 
             var videoKey = videos.results.FirstOrDefault(r => r.type.ToLower().Trim() == "trailer" && r.key != "")?.key;
             return string.IsNullOrEmpty(videoKey) ? videoKey : $"{baseYouTubePath}{videoKey}";

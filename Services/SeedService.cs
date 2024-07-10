@@ -41,7 +41,7 @@ namespace MoviePro.Services
             if (_dbContext.Roles.Any()) return;
 
 
-            var adminRole = _appSettings.MovieProSettings.DefaultCredentials.Role ?? Environment.GetEnvironmentVariable("Role");
+            var adminRole = Environment.GetEnvironmentVariable("Role") ?? _appSettings.MovieProSettings.DefaultCredentials.Role;
 
             //var adminRole = _appSettings.MovieProSettings.DefaultCredentials.Role;
             await _roleManager.CreateAsync(new IdentityRole(adminRole));
@@ -50,9 +50,9 @@ namespace MoviePro.Services
         private async Task SeedUsersAsync()
         {
             if (_userManager.Users.Any()) return;
-            var email = _appSettings.MovieProSettings.DefaultCredentials.Email ?? Environment.GetEnvironmentVariable("Email");
-            var userName = _appSettings.MovieProSettings.DefaultCredentials.Email ?? Environment.GetEnvironmentVariable("Email");
-            var password = _appSettings.MovieProSettings.DefaultCredentials.Password ?? Environment.GetEnvironmentVariable("Password");
+            var email = Environment.GetEnvironmentVariable("Email") ?? _appSettings.MovieProSettings.DefaultCredentials.Email;
+            var userName = Environment.GetEnvironmentVariable("Email") ?? _appSettings.MovieProSettings.DefaultCredentials.Email;
+            var password = Environment.GetEnvironmentVariable("Password") ?? _appSettings.MovieProSettings.DefaultCredentials.Password;
 
             //var credentials = _appSettings.MovieProSettings.DefaultCredentials;
             var newUser = new IdentityUser()
@@ -71,8 +71,8 @@ namespace MoviePro.Services
         {
             if (_dbContext.Collection.Any()) return;
 
-            var name = _appSettings.MovieProSettings.DefaultCollection.Name ?? Environment.GetEnvironmentVariable("Name");
-            var description = _appSettings.MovieProSettings.DefaultCollection.Description ?? Environment.GetEnvironmentVariable("Description");
+            var name = Environment.GetEnvironmentVariable("Name") ?? _appSettings.MovieProSettings.DefaultCollection.Name;
+            var description = Environment.GetEnvironmentVariable("Description") ?? _appSettings.MovieProSettings.DefaultCollection.Description;
 
             _dbContext.Add(new Collection()
             {

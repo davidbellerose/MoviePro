@@ -133,7 +133,7 @@ namespace MoviePro.Controllers
             await _context.SaveChangesAsync();
 
             // adds movie to the default "All" collection
-            //var defaultCollectionName = _appSettings.MovieProSettings.DefaultCollection.Name ?? Environment.GetEnvironmentVariable("Name");
+            //var defaultCollectionName = Environment.GetEnvironmentVariable("Name") ?? _appSettings.MovieProSettings.DefaultCollection.Name;
             //await AddToMovieCollection(movie.Id, defaultCollectionName);
 
             // adds movie to collection from select list

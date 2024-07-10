@@ -28,7 +28,7 @@ namespace MoviePro.Controllers
         // GET: Collections
         public async Task<IActionResult> Index()
         {
-            var defaultCollectionName = _appSettings.MovieProSettings.DefaultCollection.Name ?? Environment.GetEnvironmentVariable("Name");
+            var defaultCollectionName = Environment.GetEnvironmentVariable("Name") ?? _appSettings.MovieProSettings.DefaultCollection.Name;
 
             //var collections = await _context.Collection.Where(c => c.Name != defaultCollectionName)
             //.OrderBy(x => x.Name)
@@ -87,7 +87,7 @@ namespace MoviePro.Controllers
             {
                 try
                 {
-                    var defaultCollectionName = _appSettings.MovieProSettings.DefaultCollection.Name ?? Environment.GetEnvironmentVariable("Name");
+                    var defaultCollectionName = Environment.GetEnvironmentVariable("Name") ?? _appSettings.MovieProSettings.DefaultCollection.Name;
 
                     if (collection.Name == defaultCollectionName)
                     {
@@ -128,7 +128,7 @@ namespace MoviePro.Controllers
                 return NotFound();
             }
 
-            var defaultCollectionName = _appSettings.MovieProSettings.DefaultCollection.Name ?? Environment.GetEnvironmentVariable("Name");
+            var defaultCollectionName = Environment.GetEnvironmentVariable("Name") ?? _appSettings.MovieProSettings.DefaultCollection.Name;
 
             if (collection.Name == defaultCollectionName)
             {
