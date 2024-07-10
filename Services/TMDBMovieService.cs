@@ -107,12 +107,12 @@ namespace MoviePro.Services
             MovieSearch movieSearch = new();
 
             // Environment Variable Settings
-            var baseUrl = _appSettings.TMDBSettings.BaseUrl ?? Environment.GetEnvironmentVariable("BaseUrl");
-            var apiKey = _appSettings.MovieProSettings.TmDbApiKey ?? Environment.GetEnvironmentVariable("TmDbApiKey");
-            var language = _appSettings.TMDBSettings.QueryOptions.Language ?? Environment.GetEnvironmentVariable("Language");
-            var page = _appSettings.TMDBSettings.QueryOptions.Page ?? Environment.GetEnvironmentVariable("page");
-            var baseImagePath = _appSettings.TMDBSettings.BaseImagePath ?? Environment.GetEnvironmentVariable("BaseImagePath");
-            var defaultPosterSize = _appSettings.MovieProSettings.DefaultPosterSize ?? Environment.GetEnvironmentVariable("DefaultPosterSize");
+            var baseUrl = /*_appSettings.TMDBSettings.BaseUrl ??*/ Environment.GetEnvironmentVariable("BaseUrl");
+            var apiKey = /*_appSettings.MovieProSettings.TmDbApiKey ??*/ Environment.GetEnvironmentVariable("TmDbApiKey");
+            var language = /*_appSettings.TMDBSettings.QueryOptions.Language ??*/ Environment.GetEnvironmentVariable("Language");
+            var page = /*_appSettings.TMDBSettings.QueryOptions.Page ??*/ Environment.GetEnvironmentVariable("page");
+            var baseImagePath = /*_appSettings.TMDBSettings.BaseImagePath ??*/ Environment.GetEnvironmentVariable("BaseImagePath");
+            var defaultPosterSize = /*_appSettings.MovieProSettings.DefaultPosterSize ??*/ Environment.GetEnvironmentVariable("DefaultPosterSize");
 
             //Step 1: Assemble the full request uri string
             //var query = $"{_appSettings.TMDBSettings.BaseUrl}/movie/{category}";
