@@ -12,9 +12,7 @@ add to portfolio
 ***************************
     BUGS
 ****************************
-Railway didn't like the seeder, says the roles, users, and collecitons
-    were null, I musn't have entered the variables from the secrets
-    file correctly. I disabled the seeder for now. It works
+
 ***************************
     FEATURES
 ****************************

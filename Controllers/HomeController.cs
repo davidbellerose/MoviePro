@@ -31,7 +31,7 @@ namespace MoviePro.Controllers
 
         public async Task<IActionResult> Index()
         {
-            const int count = 18;
+            int count = 18;
 
             var data = new LandingPageVM()
             {
@@ -46,7 +46,7 @@ namespace MoviePro.Controllers
 
         public async Task<IActionResult> IndexPopular()
         {
-            const int count = 18;
+            int count = 18;
 
             var data = new LandingPageVM()
             {
@@ -61,7 +61,7 @@ namespace MoviePro.Controllers
 
         public async Task<IActionResult> IndexTopRated()
         {
-            const int count = 18;
+            int count = 18;
 
             var data = new LandingPageVM()
             {
@@ -76,7 +76,7 @@ namespace MoviePro.Controllers
 
         public async Task<IActionResult> IndexNowPlaying()
         {
-            const int count = 18;
+            int count = 18;
 
             var data = new LandingPageVM()
             {
