@@ -125,6 +125,7 @@ cardHeader.forEach(header => {
 $(document).ready(function () {
     $("h1").delay("1000").fadeIn();
     // hide #back-top first
+    // may need if window position > 200 fade in. will it conflict?
     $("#btt").hide();
 
     // fade in #back-top
@@ -134,7 +135,6 @@ $(document).ready(function () {
                 $('#btt').fadeIn(800);
             } else {
                 $('#btt').fadeOut(400);
-
             }
         });
 

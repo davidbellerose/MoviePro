@@ -58,7 +58,7 @@ namespace MoviePro.Controllers
                     .Include(m => m.Movie)
                     .OrderBy(m => m.Movie.Title).ThenBy(m => m.Movie.ReleaseDate).ToListAsync();
 
-                int pageSize = 4;
+                int pageSize = 12;
                 if (pg < 1)
                 {
                     pg = 1;
