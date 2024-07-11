@@ -17,7 +17,7 @@ namespace MoviePro.Models
 
         }
 
-        public Pager(int totalItems, int page, int pageSize = 4)
+        public Pager(int totalItems, int page, int pageSize = 12)
         {
             int totalPages = (int)Math.Ceiling((decimal)totalItems / (decimal)pageSize);
             int currentPage = page;
