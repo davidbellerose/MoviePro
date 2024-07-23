@@ -12,14 +12,7 @@ add to portfolio
 ***************************
     BUGS
 ****************************
-when hitting the back button and landing on a page that is already
-    scrolled down, the back to top button is hidden unless you move the scrollbar
 
-
-So for anyone reading this I had to swap the two properties on either side of the "??" null-coalescing operator. For some reason the original first part `_appSettings.TMDBSettings.BaseUrl` , being local, should return null on Railway but somehow didn't. I assume it evaluated to something other than null, so the second part of the statement after the ?? was never evaluated. Swaping them allowed the Environment variable to be evaluated first, which returns null locally, but works on Railway since the Environment variable is evaluated first, and is successfully picked up on Railway by the app.
-
-`var baseUrl = Environment.GetEnvironmentVariable("BaseUrl") ?? _appSettings.TMDBSettings.BaseUrl;`
-At least that's my theory.
 ***************************
     FEATURES
 ****************************
