@@ -100,10 +100,17 @@
     </main>
     <div class="footer-container">
         <div class="footer-item">
-            <span>&copy;2022</span> &nbsp;David Bellerose |&nbsp;
-            <a class="ms-2" href="https://davidbellerose.com/privacy.html" target="_blank">Privacy</a> &nbsp;|&nbsp;
-            <a class="ms-2" href="https://davidbellerose.com/terms.html" target="_blank">Terms & Conditions</a> &nbsp;|&nbsp;
-            <a class="ms-2" href="https://davidbellerose.com/cookies.html" target="_blank">Cookie Policy</a>
+            <div>
+                <span>&copy;2022</span> &nbsp;David Bellerose |&nbsp;
+                Powered by &nbsp;&nbsp;<a href="https://www.themoviedb.org">
+                    <img src="/images/THEMOVEDBLogo.svg" height="10" />
+                </a>
+            </div>
+            <div>
+                <a class="ms-2" href="https://davidbellerose.com/privacy.html" target="_blank">Privacy</a> &nbsp;|&nbsp;
+                <a class="ms-2" href="https://davidbellerose.com/terms.html" target="_blank">Terms & Conditions</a> &nbsp;|&nbsp;
+                <a class="ms-2" href="https://davidbellerose.com/cookies.html" target="_blank">Cookie Policy</a>
+            </div>
         </div>
         <div class="footer-item">
             <img src="~/images/dblogo-m.png" height="40" alt="David Bellerose Logo">
@@ -122,6 +129,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
-                    @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
